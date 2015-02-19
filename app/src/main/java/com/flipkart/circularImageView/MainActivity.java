@@ -27,8 +27,9 @@ public class MainActivity extends ActionBarActivity {
         ImageView testIcon = (ImageView) findViewById(R.id.iv_test_icon);
 
         CircularDrawable circularDrawable = new CircularDrawable();
-        circularDrawable.setBitmapOrText("VS", bitmap2);
-        circularDrawable.setBorder(Color.BLACK, 8);
+        circularDrawable.setBitmapOrText(bitmap1, bitmap2, "VS", "AB");
+
+//        circularDrawable.setBorder(Color.BLACK, 8);
         testIcon.setImageDrawable(circularDrawable);
     }
 

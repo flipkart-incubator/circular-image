@@ -154,6 +154,59 @@ public class DrawerHelper {
      * @param quarterNumber Quarter number that needs to be drawn (1, 2, 3 or 4)
      */
     private void drawQuarter(Canvas canvas, int quarterNumber, Object sourceObject) {
+        if (sourceObject instanceof BitmapDrawer) {
+            //Its a bitmap
+            BitmapDrawer drawer = (BitmapDrawer) sourceObject;
+            mPaint.setShader(drawer.bitmapShader);
+            switch (quarterNumber) {
+                case 1:
+                    canvas.drawArc(mRect, 180, 90, true, mPaint);
+                    break;
+                case 2:
+                    canvas.drawArc(mRect, 90, 90, true, mPaint);
+                    break;
+                case 3:
+                    canvas.drawArc(mRect, 270, 90, true, mPaint);
+                    break;
+                case 4:
+                    canvas.drawArc(mRect, 0, 90, true, mPaint);
+                    break;
+            }
+        } else if (sourceObject instanceof String) {
+            //Its a text
+            String message = (String) sourceObject;
+            float previousTextSize = mTextPaint.getTextSize();
+            mTextPaint.setTextSize(previousTextSize * 0.45f);
 
+            switch (quarterNumber) {
+                case 1:
+                    mBackgroundPaint.setColor(Color.RED);
+                    canvas.drawArc(mRect, 180, 90, true, mBackgroundPaint);
+                    canvas.drawText(message, 0, 2, mRect.centerX() * 0.4f, mRect.centerY() * 0.64f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
+                            mTextPaint);
+                    break;
+                case 2:
+                    mBackgroundPaint.setColor(Color.YELLOW);
+                    canvas.drawArc(mRect, 90, 90, true, mBackgroundPaint);
+                    canvas.drawText(message, 0, 2, mRect.centerX() * 0.4f, mRect.centerY() * 1.35f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
+                            mTextPaint);
+                    break;
+                case 3:
+                    mBackgroundPaint.setColor(Color.DKGRAY);
+                    canvas.drawArc(mRect, 270, 90, true, mBackgroundPaint);
+                    canvas.drawText(message, 0, 2, mRect.centerX() * 1.4f, mRect.centerY() * 0.64f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
+                            mTextPaint);
+                    break;
+                case 4:
+                    mBackgroundPaint.setColor(Color.MAGENTA);
+                    canvas.drawArc(mRect, 0, 90, true, mBackgroundPaint);
+                    canvas.drawText(message, 0, 2, mRect.centerX() * 1.4f, mRect.centerY() * 1.35f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
+                            mTextPaint);
+                    break;
+            }
+
+            //Restore the textSize, once the drawing is done, so that new drawing can scale appropriately
+            mTextPaint.setTextSize(previousTextSize);
+        }
     }
 }
