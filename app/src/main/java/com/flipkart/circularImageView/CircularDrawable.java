@@ -11,34 +11,34 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import static com.flipkart.circularImageView.DrawerHelper.DrawingType;
 
 class CircularDrawable extends Drawable {
+    private final static boolean USE_THIN_FONT = false;
+
     private final RectF mRect;
-    private final Paint mPaint;
     private float mBorderWidth;
     private int mBorderColor;
+    private final Paint mPaint;
     private final Paint mBorderPaint;
+    private final Paint mTextPaint;
+    private final Paint mBackgroundPaint;
+    private DrawerHelper drawerHelper;
 
     //Objects (Text or Bitmap) that shall be drawn in CircleDrawable
     private List<Object> sourceObjects = new ArrayList();
 
     private ImageView.ScaleType scaleType = ImageView.ScaleType.CENTER_CROP;
 
-    private class BitmapDrawer {
-        private Bitmap bitmap;
-        private BitmapShader bitmapShader;
-    }
-
-    private enum DrawingType {
-        QUARTER_CIRCLE, HALF_CIRCLE, FULL_CIRCLE;
-    }
-
-    CircularDrawable() {
+    public CircularDrawable() {
         //Initializing all the variables during construction, in order to avoid initializations during draw operation.
         mRect = new RectF();
 
@@ -46,14 +46,34 @@ class CircularDrawable extends Drawable {
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
 
+        mBackgroundPaint = new Paint();
+        mBackgroundPaint.setAntiAlias(true);
+        mBackgroundPaint.setDither(true);
+
         mBorderPaint = new Paint();
         mBorderPaint.setAntiAlias(true);
         mBorderPaint.setDither(true);
         mBorderPaint.setStyle(Paint.Style.STROKE);
 
+        mTextPaint = new Paint();
+        mTextPaint.setColor(Color.WHITE);
+        mTextPaint.setTextSize(100);
+        mTextPaint.setLinearText(true);
+        mTextPaint.setAntiAlias(true);
+        mTextPaint.setDither(true);
+        mTextPaint.setTextLocale(Locale.ENGLISH);
+        mTextPaint.setTextAlign(Paint.Align.CENTER);
+        //Setting Thin Font space
+        if (USE_THIN_FONT) {
+            Typeface tf = Typeface.create("sans-serif-light", Typeface.NORMAL);
+            mTextPaint.setTypeface(tf);
+        }
+
         //Default border color
         mBorderColor = Color.BLACK;
         mBorderPaint.setColor(mBorderColor);
+
+        drawerHelper = new DrawerHelper(mRect, mPaint, mBorderPaint, mTextPaint, mBackgroundPaint, sourceObjects);
     }
 
     public void setBorder(int color, float width) {
@@ -97,34 +117,17 @@ class CircularDrawable extends Drawable {
             Object sourceObject = sourceObjects.get(i);
             if (sourceObject instanceof BitmapDrawer) {
                 BitmapDrawer bitmapDrawer = (BitmapDrawer) sourceObject;
-                bitmapDrawer.bitmapShader.setLocalMatrix(getLocalMatrix(bitmapDrawer.bitmap, getDrawingType(i, sourceObjects.size())));
+                bitmapDrawer.bitmapShader.setLocalMatrix(getLocalMatrix(bitmapDrawer.bitmap, drawerHelper.getDrawingType(i, sourceObjects.size())));
             }
         }
-    }
 
-    private DrawingType getDrawingType(int position, int totalItems) {
-        switch (totalItems) {
-            case 4:
-                return DrawingType.QUARTER_CIRCLE;
-
-            case 3:
-                if (position == 0) return DrawingType.HALF_CIRCLE;
-                else return DrawingType.QUARTER_CIRCLE;
-
-            case 2:
-                return DrawingType.HALF_CIRCLE;
-
-            default:
-            case 1:
-                return DrawingType.FULL_CIRCLE;
-        }
+        //Set Text size for drawing text
+        mTextPaint.setTextSize((bounds.height() - 2 * mBorderWidth) * 0.4f);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        BitmapDrawer drawer = (BitmapDrawer) sourceObjects.get(0);
-        mPaint.setShader(drawer.bitmapShader);
-        canvas.drawCircle(mRect.centerX(), mRect.centerY(), mRect.width() / 2, mPaint);
+        drawerHelper.drawComplexCircle(canvas);
 
         //Draw border
         if (mBorderWidth > 0) canvas.drawCircle(mRect.centerX(), mRect.centerY(), mRect.width() / 2 + mBorderWidth / 2 - 1, mBorderPaint);
@@ -146,27 +149,6 @@ class CircularDrawable extends Drawable {
     }
 
     public Matrix getLocalMatrix(Bitmap bitmap, DrawingType drawingType) {
-        Matrix matrix = new Matrix();
-        switch (scaleType) {
-            case CENTER_CROP:
-                if (drawingType == DrawingType.FULL_CIRCLE) {
-                    float scale;
-                    if (bitmap.getHeight() > bitmap.getWidth()) {
-                        //Portrait
-                        scale = mRect.width() / bitmap.getWidth();
-                        matrix.setScale(scale, scale);
-                        //Portrait we don't want to translate to middle, since most of the faces are in top area, not in center
-                        matrix.setScale(scale, scale);
-                        matrix.postTranslate(mBorderWidth, mBorderWidth);
-                    } else {
-                        //Landscape
-                        scale = mRect.height() / bitmap.getHeight();
-                        float difference = mRect.width() + 2 * mBorderWidth - bitmap.getWidth() * scale;
-                        matrix.setScale(scale, scale);
-                        matrix.postTranslate(difference / 2, mBorderWidth);
-                    }
-                }
-        }
-        return matrix;
+        return new MatrixGenerator(mRect, mBorderWidth).generateMatrix(scaleType, bitmap, drawingType);
     }
 }

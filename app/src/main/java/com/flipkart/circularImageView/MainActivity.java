@@ -20,14 +20,15 @@ public class MainActivity extends ActionBarActivity {
 
         int widthPixels = getResources().getDisplayMetrics().widthPixels;
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.jennifer_aniston);
-        Log.v(MainActivity.class.getName(), "Height:" + bitmap.getHeight() + " Width:" + bitmap.getWidth());
+        Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.katrina_kaif);
+        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.jennifer_aniston);
+        Log.v(MainActivity.class.getName(), "Height:" + bitmap1.getHeight() + " Width:" + bitmap1.getWidth());
 
         ImageView testIcon = (ImageView) findViewById(R.id.iv_test_icon);
 
         CircularDrawable circularDrawable = new CircularDrawable();
-        circularDrawable.setBitmapOrText(bitmap);
-        circularDrawable.setBorder(Color.BLACK, 6);
+        circularDrawable.setBitmapOrText("VS", bitmap2);
+        circularDrawable.setBorder(Color.BLACK, 8);
         testIcon.setImageDrawable(circularDrawable);
     }
 
