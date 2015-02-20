@@ -9,6 +9,36 @@
                 tools:context=".MainActivity">
     <ImageView android:layout_width="60dp"
                android:layout_height="60dp"
-               android:id="@+id/iv_test_icon"/>
+               android:id="@+id/iv_test_icon_1"/>
+
+    <ImageView android:layout_width="70dp"
+               android:layout_height="70dp"
+               android:id="@+id/iv_test_icon_2"
+               android:layout_marginTop="20dp"
+               android:layout_below="@+id/iv_test_icon_1"/>
+
+    <ImageView android:layout_width="80dp"
+               android:layout_height="80dp"
+               android:id="@+id/iv_test_icon_3"
+               android:layout_marginTop="20dp"
+               android:layout_below="@+id/iv_test_icon_2"/>
+
+    <ImageView android:layout_width="90dp"
+               android:layout_height="90dp"
+               android:id="@+id/iv_test_icon_4"
+               android:layout_marginTop="20dp"
+               android:layout_below="@+id/iv_test_icon_3"/>
+
+    <ImageView android:layout_width="100dp"
+               android:layout_height="100dp"
+               android:id="@+id/iv_test_icon_5"
+               android:layout_marginTop="20dp"
+               android:layout_below="@+id/iv_test_icon_4"/>
+
+    <ImageView android:layout_width="60dp"
+               android:layout_height="60dp"
+               android:id="@+id/iv_test_icon_6"
+               android:layout_marginTop="20dp"
+               android:layout_below="@+id/iv_test_icon_5"/>
 
 </RelativeLayout>

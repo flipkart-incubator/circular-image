@@ -136,7 +136,7 @@ public class MatrixGenerator {
         }
     }
 
-    public Matrix generateMatrix(RectF containerRect, RectF badgeRect, int border, Bitmap bitmap, DrawerHelper.DrawingType drawingType) {
+    public Matrix generateMatrix(RectF containerRect, RectF badgeRect, Bitmap bitmap) {
         Matrix matrix = new Matrix();
         float scale;
         if (bitmap.getHeight() > bitmap.getWidth()) {

@@ -13,6 +13,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -46,7 +47,12 @@ class CircularDrawable extends Drawable {
 
     private ImageView.ScaleType scaleType = ImageView.ScaleType.CENTER_CROP;
     private String notificationText;
+    private NotificationStyle notificationStyle;
     private double angleFromHorizontal; //Radians
+
+    public enum NotificationStyle {
+        Rectangle, Circle
+    }
 
     public CircularDrawable() {
         //Initializing all the variables during construction, in order to avoid initializations during draw operation.
@@ -79,6 +85,9 @@ class CircularDrawable extends Drawable {
         mNotificationTextPaint.setDither(true);
         mNotificationTextPaint.setTextLocale(Locale.ENGLISH);
         mNotificationTextPaint.setTextAlign(Paint.Align.CENTER);
+
+        notificationStyle = NotificationStyle.Rectangle;
+        this.angleFromHorizontal = 0.785; //Radians (45 Degrees)
 
         mBadgePaint = new Paint();
         mBadgePaint.setAntiAlias(true);
@@ -116,13 +125,41 @@ class CircularDrawable extends Drawable {
     /**
      * Show the notification ticker text
      *
-     * @param notificationText    Text to be shown
-     * @param angleFromHorizontal Angle from horizontal in degrees
+     * @param notificationText Text to be shown
      */
-    public void setNotification(String notificationText, int angleFromHorizontal) {
+    public void setNotificationText(String notificationText) {
         this.notificationText = notificationText;
-        this.angleFromHorizontal = 3.14 * angleFromHorizontal / 180;
     }
+
+    /**
+     * Set Notification Angle from horizontal
+     *
+     * @param notificationAngle angle from horizontal (in Degree).
+     */
+    public void setNotificationAngle(int notificationAngle) {
+        this.angleFromHorizontal = 3.14 * notificationAngle / 180;
+    }
+
+    /**
+     * Set Notification Style
+     *
+     * @param notificationStyle Notification style (Circle or Rectangle)
+     */
+    public void setNotificationStyle(NotificationStyle notificationStyle) {
+        this.notificationStyle = notificationStyle;
+    }
+
+    /**
+     * Set notification background Color
+     *
+     * @param textColor       Text color
+     * @param backgroundColor Background color
+     */
+    public void setNotificationColor(int textColor, int backgroundColor) {
+        mNotificationPaint.setColor(backgroundColor);
+        mNotificationTextPaint.setColor(textColor);
+    }
+
 
     /**
      * Provide Icon for Badge
@@ -174,17 +211,20 @@ class CircularDrawable extends Drawable {
         }
 
         //Set Local Matrix for Shader of badge
-        mBadgeRect.set(0, 0, mRect.width() / 2.5f, mRect.height() / 2.5f);
-        mBadgePaint.getShader().setLocalMatrix(getLocalMatrixForBottomCorner(mRect, mBadgeRect, 0, badge, DrawingType.FULL_CIRCLE));
+        if(badge != null) {
+            mBadgeRect.set(0, 0, mRect.width() / 2.5f, mRect.height() / 2.5f);
+            mBadgePaint.getShader().setLocalMatrix(getLocalMatrixForBottomCorner(mRect, mBadgeRect, badge));
+        }
 
         //Set Text size for drawing text
         mTextPaint.setTextSize((bounds.height() - 2 * mBorderWidth) * 0.4f);
-        mNotificationTextPaint.setTextSize(mTextPaint.getTextSize() * 0.5f);
+        mNotificationTextPaint.setTextSize(mTextPaint.getTextSize() * 0.65f);
         notificationPadding = mNotificationTextPaint.getTextSize() * 0.3f;
     }
 
     @Override
     public void draw(Canvas canvas) {
+        long currentTime = System.currentTimeMillis();
         drawerHelper.drawComplexCircle(canvas);
 
         //Draw border
@@ -198,28 +238,41 @@ class CircularDrawable extends Drawable {
         //Draw Notification
         if (notificationText != null && !notificationText.equals("")) {
             //Draw Notification
-            Rect bound = new Rect();
-            int notificationTextLength = notificationText.length();
-            float textSize = mNotificationTextPaint.getTextSize();
-            mNotificationTextPaint.getTextBounds(notificationText, 0, notificationTextLength, bound);
-            float notificationCenterX = (float) (mRect.centerX() + (mRect.width() / 2) * Math.cos(angleFromHorizontal));
-            //Adjust notificationCenterX so that it shall not go out of bounds
-            float effectiveWidth = bound.width() + notificationPadding * 2;
-            if (notificationCenterX + effectiveWidth / 2 > mRect.right) notificationCenterX = mRect.right - effectiveWidth / 2;
-            else if (notificationCenterX - effectiveWidth / 2 < mRect.left) notificationCenterX = mRect.left + effectiveWidth / 2;
-
-            float notificationCenterY = (float) (mRect.centerY() - (mRect.width() / 2) * Math.sin(angleFromHorizontal));
-            //Adjust notificationCenterY so that it shall not go out of bounds
-            float effectiveHeight = bound.height() + notificationPadding * 2;
-            if (notificationCenterY - effectiveHeight / 2 < mRect.top) notificationCenterY = mRect.top + effectiveHeight / 2;
-            else if (notificationCenterY + effectiveHeight / 2 > mRect.bottom) notificationCenterY = mRect.bottom - effectiveHeight / 2;
-
-            canvas.drawRoundRect(notificationCenterX - bound.width() / 2 - notificationPadding, notificationCenterY - bound.height() / 2 -
-                    notificationPadding, notificationCenterX + bound.width() / 2 + notificationPadding, notificationCenterY + bound.height() / 2 +
-                    notificationPadding, textSize * 0.15f, textSize * 0.15f, mNotificationPaint);
-            canvas.drawText(notificationText, 0, notificationTextLength, notificationCenterX, notificationCenterY - (mNotificationTextPaint.ascent() +
-                    mNotificationTextPaint.descent()) / 2, mNotificationTextPaint);
+            drawNotification(canvas);
         }
+        Log.v("CircularImageView", "Time taken to draw: " + (System.currentTimeMillis() - currentTime) + "ms");
+    }
+
+    private void drawNotification(Canvas canvas) {
+        Rect bound = new Rect();
+        int notificationTextLength = notificationText.length();
+        float textSize = mNotificationTextPaint.getTextSize();
+        mNotificationTextPaint.getTextBounds(notificationText, 0, notificationTextLength, bound);
+        float notificationCenterX = (float) (mRect.centerX() + (mRect.width() / 2) * Math.cos(angleFromHorizontal));
+        //Adjust notificationCenterX so that it shall not go out of bounds
+        float effectiveWidth = bound.width() + notificationPadding * 2;
+        if (notificationCenterX + effectiveWidth / 2 > mRect.right) notificationCenterX = mRect.right - effectiveWidth / 2;
+        else if (notificationCenterX - effectiveWidth / 2 < mRect.left) notificationCenterX = mRect.left + effectiveWidth / 2;
+
+        float notificationCenterY = (float) (mRect.centerY() - (mRect.width() / 2) * Math.sin(angleFromHorizontal));
+        //Adjust notificationCenterY so that it shall not go out of bounds
+        float effectiveHeight = bound.height() + notificationPadding * 2;
+        if (notificationCenterY - effectiveHeight / 2 < mRect.top) notificationCenterY = mRect.top + effectiveHeight / 2;
+        else if (notificationCenterY + effectiveHeight / 2 > mRect.bottom) notificationCenterY = mRect.bottom - effectiveHeight / 2;
+
+        switch (notificationStyle) {
+            case Rectangle:
+                canvas.drawRoundRect(notificationCenterX - bound.width() / 2 - notificationPadding, notificationCenterY - bound.height() / 2 -
+                        notificationPadding, notificationCenterX + bound.width() / 2 + notificationPadding, notificationCenterY + bound.height() / 2 +
+                        notificationPadding, textSize * 0.15f, textSize * 0.15f, mNotificationPaint);
+                break;
+            case Circle:
+                canvas.drawCircle(notificationCenterX, notificationCenterY, bound.width() / 2 + notificationPadding, mNotificationPaint);
+                break;
+        }
+
+        canvas.drawText(notificationText, 0, notificationTextLength, notificationCenterX, notificationCenterY - (mNotificationTextPaint.ascent() +
+                mNotificationTextPaint.descent()) / 2, mNotificationTextPaint);
     }
 
     @Override
@@ -241,7 +294,7 @@ class CircularDrawable extends Drawable {
         return new MatrixGenerator(rectF, borderWidth).generateMatrix(scaleType, bitmap, drawingType);
     }
 
-    private Matrix getLocalMatrixForBottomCorner(RectF containerRect, RectF cornerRect, int border, Bitmap badge, DrawingType drawingType) {
-        return new MatrixGenerator(mRect, border).generateMatrix(containerRect, cornerRect, border, badge, drawingType);
+    private Matrix getLocalMatrixForBottomCorner(RectF containerRect, RectF cornerRect, Bitmap badge) {
+        return new MatrixGenerator(mRect, mBorderWidth).generateMatrix(containerRect, cornerRect, badge);
     }
 }
