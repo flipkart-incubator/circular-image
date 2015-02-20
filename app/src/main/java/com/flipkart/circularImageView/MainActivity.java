@@ -2,7 +2,6 @@ package com.flipkart.circularImageView;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -22,13 +21,15 @@ public class MainActivity extends ActionBarActivity {
 
         Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.katrina_kaif);
         Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.jennifer_aniston);
+        Bitmap badgeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.flipkart_round);
         Log.v(MainActivity.class.getName(), "Height:" + bitmap1.getHeight() + " Width:" + bitmap1.getWidth());
 
         ImageView testIcon = (ImageView) findViewById(R.id.iv_test_icon);
 
         CircularDrawable circularDrawable = new CircularDrawable();
-        circularDrawable.setBitmapOrText(bitmap1, bitmap2, "VS", "AB");
-
+        circularDrawable.setBitmapOrText(bitmap2);
+        circularDrawable.setNotification("5", 45);
+        circularDrawable.setBadge(badgeIcon);
 //        circularDrawable.setBorder(Color.BLACK, 8);
         testIcon.setImageDrawable(circularDrawable);
     }

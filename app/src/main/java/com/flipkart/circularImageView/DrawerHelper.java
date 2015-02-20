@@ -182,13 +182,13 @@ public class DrawerHelper {
                 case 1:
                     mBackgroundPaint.setColor(Color.RED);
                     canvas.drawArc(mRect, 180, 90, true, mBackgroundPaint);
-                    canvas.drawText(message, 0, 2, mRect.centerX() * 0.4f, mRect.centerY() * 0.64f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
+                    canvas.drawText(message, 0, 2, mRect.centerX() * 0.6f, mRect.centerY() * 0.64f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
                             mTextPaint);
                     break;
                 case 2:
                     mBackgroundPaint.setColor(Color.YELLOW);
                     canvas.drawArc(mRect, 90, 90, true, mBackgroundPaint);
-                    canvas.drawText(message, 0, 2, mRect.centerX() * 0.4f, mRect.centerY() * 1.35f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
+                    canvas.drawText(message, 0, 2, mRect.centerX() * 0.6f, mRect.centerY() * 1.35f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
                             mTextPaint);
                     break;
                 case 3:

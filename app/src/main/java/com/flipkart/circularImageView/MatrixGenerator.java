@@ -135,4 +135,24 @@ public class MatrixGenerator {
             matrix.postTranslate(translateX, translateY);
         }
     }
+
+    public Matrix generateMatrix(RectF containerRect, RectF badgeRect, int border, Bitmap bitmap, DrawerHelper.DrawingType drawingType) {
+        Matrix matrix = new Matrix();
+        float scale;
+        if (bitmap.getHeight() > bitmap.getWidth()) {
+            //Portrait
+            scale = badgeRect.width() / bitmap.getWidth();
+            matrix.setScale(scale, scale);
+            //Portrait we don't want to translate to middle, since most of the faces are in top area, not in center
+            matrix.setScale(scale, scale);
+            matrix.postTranslate(mBorderWidth + containerRect.width() - badgeRect.width(), mBorderWidth + containerRect.height() - badgeRect.height());
+        } else {
+            //Landscape
+            scale = badgeRect.height() / bitmap.getHeight();
+            float difference = badgeRect.width() + 2 * mBorderWidth - bitmap.getWidth() * scale;
+            matrix.setScale(scale, scale);
+            matrix.postTranslate(difference / 2 + containerRect.width() - badgeRect.width(), mBorderWidth + containerRect.height() - badgeRect.height());
+        }
+        return matrix;
+    }
 }
