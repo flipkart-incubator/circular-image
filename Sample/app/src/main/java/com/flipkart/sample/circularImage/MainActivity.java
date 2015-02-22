@@ -9,8 +9,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.ImageView;
-
-import com.flipkart.sample.circularImage.R;
+import com.flipkart.circularImageView.CircularDrawable;
+import com.flipkart.circularImageView.TextDrawer;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -67,7 +67,8 @@ public class MainActivity extends ActionBarActivity {
 
             //Test Image 3
             circularDrawable3 = new CircularDrawable();
-            circularDrawable3.setBitmapOrText("VS");
+            TextDrawer vsTextDrawer = new TextDrawer().setText("VS").setBackgroundColor(Color.BLUE).setTextColor(Color.WHITE);
+            circularDrawable3.setBitmapOrText(vsTextDrawer);
 //          circularDrawable3.setNotificationText("5");
 //          circularDrawable3.setNotificationAngle(45);
 //          circularDrawable3.setNotificationStyle(CircularDrawable.NotificationStyle.Circle);
@@ -77,7 +78,7 @@ public class MainActivity extends ActionBarActivity {
 
             //Test Image 4
             circularDrawable4 = new CircularDrawable();
-            circularDrawable4.setBitmapOrText("VS", bitmap2);
+            circularDrawable4.setBitmapOrText(vsTextDrawer, bitmap2);
             circularDrawable4.setNotificationText("51");
             circularDrawable4.setNotificationAngle(135);
             circularDrawable4.setNotificationStyle(CircularDrawable.NotificationStyle.Circle);
@@ -87,7 +88,7 @@ public class MainActivity extends ActionBarActivity {
 
             //Test Image 5
             circularDrawable5 = new CircularDrawable();
-            circularDrawable5.setBitmapOrText("VS", bitmap2, bitmap1);
+            circularDrawable5.setBitmapOrText(vsTextDrawer, bitmap2, bitmap1);
 //          circularDrawable5.setNotificationText("5");
 //          circularDrawable5.setNotificationAngle(135);
 //          circularDrawable5.setNotificationStyle(CircularDrawable.NotificationStyle.Circle);
@@ -97,7 +98,8 @@ public class MainActivity extends ActionBarActivity {
 
             //Test Image 6
             circularDrawable6 = new CircularDrawable();
-            circularDrawable6.setBitmapOrText("VS", bitmap2, bitmap1, "AB");
+            TextDrawer abTextDrawer = new TextDrawer().setText("AB").setBackgroundColor(Color.RED).setTextColor(Color.WHITE);
+            circularDrawable6.setBitmapOrText(vsTextDrawer, bitmap2, bitmap1, abTextDrawer);
 //          circularDrawable6.setNotificationText("5");
 //          circularDrawable6.setNotificationAngle(135);
 //          circularDrawable6.setNotificationStyle(CircularDrawable.NotificationStyle.Circle);

@@ -1,7 +1,6 @@
 package com.flipkart.circularImageView;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
@@ -102,10 +101,12 @@ public class DrawerHelper {
             BitmapDrawer drawer = (BitmapDrawer) sourceObject;
             mPaint.setShader(drawer.bitmapShader);
             canvas.drawCircle(mRect.centerX(), mRect.centerY(), mRect.width() / 2, mPaint);
-        } else if (sourceObject instanceof String) {
+        } else if (sourceObject instanceof TextDrawer) {
             //Its a text, write text
-            String message = (String) sourceObject;
-            mBackgroundPaint.setColor(Color.BLUE);
+            TextDrawer textDrawer = (TextDrawer) sourceObject;
+            String message = textDrawer.getText();
+            mBackgroundPaint.setColor(textDrawer.getBackgroundColor());
+            mTextPaint.setColor(textDrawer.getTextColor());
             canvas.drawCircle(mRect.centerX(), mRect.centerY(), mRect.width() / 2, mBackgroundPaint);
             canvas.drawText(message, 0, 2, mRect.centerX(), mRect.centerY() - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
         }
@@ -127,17 +128,18 @@ public class DrawerHelper {
             } else {
                 canvas.drawArc(mRect, 270, 180, false, mPaint);
             }
-        } else if (sourceObject instanceof String) {
+        } else if (sourceObject instanceof TextDrawer) {
             //Its a text
-            String message = (String) sourceObject;
+            TextDrawer textDrawer = (TextDrawer) sourceObject;
+            String message = textDrawer.getText();
+            mBackgroundPaint.setColor(textDrawer.getBackgroundColor());
+            mTextPaint.setColor(textDrawer.getTextColor());
             float previousTextSize = mTextPaint.getTextSize();
             mTextPaint.setTextSize(previousTextSize * 0.7f);
             if (halfNumber == 1) {
-                mBackgroundPaint.setColor(Color.BLUE);
                 canvas.drawArc(mRect, 90, 180, false, mBackgroundPaint);
                 canvas.drawText(message, 0, 2, mRect.centerX() / 2, mRect.centerY() - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
             } else {
-                mBackgroundPaint.setColor(Color.RED);
                 canvas.drawArc(mRect, 270, 180, false, mBackgroundPaint);
                 canvas.drawText(message, 0, 2, 3 * mRect.centerX() / 2, mRect.centerY() - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
             }
@@ -172,33 +174,32 @@ public class DrawerHelper {
                     canvas.drawArc(mRect, 0, 90, true, mPaint);
                     break;
             }
-        } else if (sourceObject instanceof String) {
+        } else if (sourceObject instanceof TextDrawer) {
             //Its a text
-            String message = (String) sourceObject;
+            TextDrawer textDrawer = (TextDrawer) sourceObject;
+            String message = textDrawer.getText();
+            mBackgroundPaint.setColor(textDrawer.getBackgroundColor());
+            mTextPaint.setColor(textDrawer.getTextColor());
             float previousTextSize = mTextPaint.getTextSize();
             mTextPaint.setTextSize(previousTextSize * 0.45f);
 
             switch (quarterNumber) {
                 case 1:
-                    mBackgroundPaint.setColor(Color.RED);
                     canvas.drawArc(mRect, 180, 90, true, mBackgroundPaint);
                     canvas.drawText(message, 0, 2, mRect.centerX() * 0.6f, mRect.centerY() * 0.64f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
                             mTextPaint);
                     break;
                 case 2:
-                    mBackgroundPaint.setColor(Color.YELLOW);
                     canvas.drawArc(mRect, 90, 90, true, mBackgroundPaint);
                     canvas.drawText(message, 0, 2, mRect.centerX() * 0.6f, mRect.centerY() * 1.35f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
                             mTextPaint);
                     break;
                 case 3:
-                    mBackgroundPaint.setColor(Color.DKGRAY);
                     canvas.drawArc(mRect, 270, 90, true, mBackgroundPaint);
                     canvas.drawText(message, 0, 2, mRect.centerX() * 1.4f, mRect.centerY() * 0.64f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
                             mTextPaint);
                     break;
                 case 4:
-                    mBackgroundPaint.setColor(Color.MAGENTA);
                     canvas.drawArc(mRect, 0, 90, true, mBackgroundPaint);
                     canvas.drawText(message, 0, 2, mRect.centerX() * 1.4f, mRect.centerY() * 1.35f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
                             mTextPaint);

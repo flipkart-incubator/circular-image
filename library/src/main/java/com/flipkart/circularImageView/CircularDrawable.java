@@ -22,7 +22,7 @@ import java.util.Locale;
 
 import static com.flipkart.circularImageView.DrawerHelper.DrawingType;
 
-class CircularDrawable extends Drawable {
+public class CircularDrawable extends Drawable {
     private final static boolean USE_THIN_FONT = false;
 
     private final RectF mRect;
@@ -83,7 +83,7 @@ class CircularDrawable extends Drawable {
         mNotificationTextPaint.setLinearText(true);
         mNotificationTextPaint.setAntiAlias(true);
         mNotificationTextPaint.setDither(true);
-        mNotificationTextPaint.setTextLocale(Locale.ENGLISH);
+//        mNotificationTextPaint.setTextLocale(Locale.ENGLISH);
         mNotificationTextPaint.setTextAlign(Paint.Align.CENTER);
 
         notificationStyle = NotificationStyle.Rectangle;
@@ -99,7 +99,7 @@ class CircularDrawable extends Drawable {
         mTextPaint.setLinearText(true);
         mTextPaint.setAntiAlias(true);
         mTextPaint.setDither(true);
-        mTextPaint.setTextLocale(Locale.ENGLISH);
+//        mTextPaint.setTextLocale(Locale.ENGLISH);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
         //Setting Thin Font space
         if (USE_THIN_FONT) {
@@ -177,7 +177,7 @@ class CircularDrawable extends Drawable {
      * As of now we only support FOUR sources, and hence only first four will be considered.
      * Also, the order of drawing is same as the order of arguments.
      *
-     * @param sources Either "Bitmap" or "Strings" which needs to be drawn.
+     * @param sources Either "Bitmap" or "TextDrawer" which needs to be drawn.
      */
     public void setBitmapOrText(Object... sources) throws IllegalArgumentException {
         sourceObjects.clear();
@@ -188,7 +188,7 @@ class CircularDrawable extends Drawable {
                 drawer.bitmap = bitmap;
                 drawer.bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
                 sourceObjects.add(drawer);
-            } else if (sources[i] instanceof String) {
+            } else if (sources[i] instanceof TextDrawer) {
                 sourceObjects.add(sources[i]);
             } else {
                 throw new IllegalArgumentException("Arguments can either be instance of Bitmap or String");

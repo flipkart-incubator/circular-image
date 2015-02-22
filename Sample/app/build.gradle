@@ -19,7 +19,14 @@ android {
     }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
-}
+    repositories {
+        maven { url 'http://artifactory.nm.flipkart.com:8081/artifactory/libs-release-local' }
+    }
+
+    dependencies {
+        compile fileTree(dir: 'libs', include: ['*.jar'])
+        compile 'com.android.support:appcompat-v7:21.0.3'
+//        compile project (':library')
+        //Custom Artifact for CircularImage
+        compile 'com.flipkart.circularImage:library:1.0.2'
+    }
