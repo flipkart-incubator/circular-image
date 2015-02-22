@@ -255,18 +255,23 @@ class CircularDrawable extends Drawable {
         else if (notificationCenterX - effectiveWidth / 2 < mRect.left) notificationCenterX = mRect.left + effectiveWidth / 2;
 
         float notificationCenterY = (float) (mRect.centerY() - (mRect.width() / 2) * Math.sin(angleFromHorizontal));
-        //Adjust notificationCenterY so that it shall not go out of bounds
-        float effectiveHeight = bound.height() + notificationPadding * 2;
-        if (notificationCenterY - effectiveHeight / 2 < mRect.top) notificationCenterY = mRect.top + effectiveHeight / 2;
-        else if (notificationCenterY + effectiveHeight / 2 > mRect.bottom) notificationCenterY = mRect.bottom - effectiveHeight / 2;
 
         switch (notificationStyle) {
             case Rectangle:
-                canvas.drawRoundRect(notificationCenterX - bound.width() / 2 - notificationPadding, notificationCenterY - bound.height() / 2 -
+                //Adjust notificationCenterY so that it shall not go out of bounds
+                float effectiveHeight = bound.height() + notificationPadding * 2;
+                if (notificationCenterY - effectiveHeight / 2 < mRect.top) notificationCenterY = mRect.top + effectiveHeight / 2;
+                else if (notificationCenterY + effectiveHeight / 2 > mRect.bottom) notificationCenterY = mRect.bottom - effectiveHeight / 2;
+                RectF rectf = new RectF(notificationCenterX - bound.width() / 2 - notificationPadding, notificationCenterY - bound.height() / 2 -
                         notificationPadding, notificationCenterX + bound.width() / 2 + notificationPadding, notificationCenterY + bound.height() / 2 +
-                        notificationPadding, textSize * 0.15f, textSize * 0.15f, mNotificationPaint);
+                        notificationPadding);
+                canvas.drawRoundRect(rectf, textSize * 0.15f, textSize * 0.15f, mNotificationPaint);
                 break;
+
             case Circle:
+                //Adjust notificationCenterY so that it shall not go out of bounds
+                if (notificationCenterY - effectiveWidth / 2 < mRect.top) notificationCenterY = mRect.top + effectiveWidth / 2;
+                else if (notificationCenterY + effectiveWidth / 2 > mRect.bottom) notificationCenterY = mRect.bottom - effectiveWidth / 2;
                 canvas.drawCircle(notificationCenterX, notificationCenterY, bound.width() / 2 + notificationPadding, mNotificationPaint);
                 break;
         }
