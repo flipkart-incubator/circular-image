@@ -108,7 +108,8 @@ public class DrawerHelper {
             mBackgroundPaint.setColor(textDrawer.getBackgroundColor());
             mTextPaint.setColor(textDrawer.getTextColor());
             canvas.drawCircle(mRect.centerX(), mRect.centerY(), mRect.width() / 2, mBackgroundPaint);
-            canvas.drawText(message, 0, 2, mRect.centerX(), mRect.centerY() - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
+            canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX(), mRect.centerY() - ((mTextPaint.descent() + mTextPaint
+                    .ascent()) / 2), mTextPaint);
         }
     }
 

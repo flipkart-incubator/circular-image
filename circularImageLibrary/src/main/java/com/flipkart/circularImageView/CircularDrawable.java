@@ -41,6 +41,7 @@ public class CircularDrawable extends Drawable {
 
     private float notificationPadding = 20;
     private DrawerHelper drawerHelper;
+    private boolean isEnabledDebugging = false;
 
     //Objects (Text or Bitmap) that shall be drawn in CircleDrawable
     private List<Object> sourceObjects = new ArrayList();
@@ -112,6 +113,10 @@ public class CircularDrawable extends Drawable {
         mBorderPaint.setColor(mBorderColor);
 
         drawerHelper = new DrawerHelper(mRect, mPaint, mBorderPaint, mTextPaint, mBackgroundPaint, sourceObjects);
+    }
+
+    public void setEnabledDebugging(boolean isEnabledDebugging) {
+        this.isEnabledDebugging = isEnabledDebugging;
     }
 
     public void setBorder(int color, float width) {
@@ -240,7 +245,7 @@ public class CircularDrawable extends Drawable {
             //Draw Notification
             drawNotification(canvas);
         }
-        Log.v("CircularImageView", "Time taken to draw: " + (System.currentTimeMillis() - currentTime) + "ms");
+        if (isEnabledDebugging) Log.v("CircularImageView", "Time taken to draw: " + (System.currentTimeMillis() - currentTime) + "ms");
     }
 
     private void drawNotification(Canvas canvas) {
