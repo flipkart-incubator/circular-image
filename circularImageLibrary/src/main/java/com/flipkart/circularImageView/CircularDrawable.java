@@ -47,6 +47,8 @@ public class CircularDrawable extends Drawable {
     private ImageView.ScaleType scaleType = ImageView.ScaleType.CENTER_CROP;
 
     private NotificationDrawer notificationDrawer;
+    private Rect bounds;
+    private long id;
 
     public enum NotificationStyle {
         Rectangle, Circle
@@ -152,6 +154,7 @@ public class CircularDrawable extends Drawable {
 
     @Override
     protected void onBoundsChange(Rect bounds) {
+        this.bounds = bounds;
         super.onBoundsChange(bounds);
         //noinspection SuspiciousNameCombination
         mRect.set(mBorderWidth, mBorderWidth, bounds.width() - mBorderWidth, bounds.height() - mBorderWidth);
@@ -177,6 +180,14 @@ public class CircularDrawable extends Drawable {
         if(this.notificationDrawer != null) notificationDrawer.onBoundsChange(bounds, mBorderWidth);
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
     @Override
     public void draw(Canvas canvas) {
         long currentTime = System.currentTimeMillis();
@@ -192,7 +203,7 @@ public class CircularDrawable extends Drawable {
 
         //Draw Notification
         if (notificationDrawer != null) {
-            notificationDrawer.drawNotification(canvas, mRect);
+            notificationDrawer.drawNotification(canvas);
         }
         if (isEnabledDebugging) Log.v("CircularImageView", "Time taken to draw: " + (System.currentTimeMillis() - currentTime) + "ms");
     }

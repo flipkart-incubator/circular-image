@@ -14,6 +14,7 @@ import android.graphics.RectF;
 public abstract class NotificationDrawer {
     private float mNotificationCenterX;
     private float mNotificationCenterY;
+    private Rect outerBounds;
     protected float mNotificationPadding; //Pixels
     protected float mNotificationHeight; //Pixels
     protected float mNotificationWidth; //Pixels
@@ -73,11 +74,12 @@ public abstract class NotificationDrawer {
         return this;
     }
 
-    public void drawNotification(Canvas canvas, RectF outerBounds) {
+    public void drawNotification(Canvas canvas) {
         draw(canvas, outerBounds, mNotificationCenterX, mNotificationCenterY);
     }
 
     public void onBoundsChange(Rect bounds, float borderWidth) {
+        outerBounds = bounds;
         mNotificationTextPaint.setTextSize((bounds.height() - 2 * borderWidth) * 0.4f * 0.65f);
         mNotificationPadding = mNotificationTextPaint.getTextSize() * 0.3f;
 
@@ -93,5 +95,5 @@ public abstract class NotificationDrawer {
         mNotificationCenterY = (float) (bounds.centerY() - (bounds.width() / 2) * Math.sin(mNotificationAngleFromHorizontal));
     }
 
-    public abstract void draw(Canvas canvas, RectF outerBounds, float centerX, float centerY);
+    public abstract void draw(Canvas canvas, Rect outerBounds, float centerX, float centerY);
 }

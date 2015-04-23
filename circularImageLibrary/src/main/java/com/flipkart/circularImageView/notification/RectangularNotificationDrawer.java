@@ -1,6 +1,7 @@
 package com.flipkart.circularImageView.notification;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.RectF;
 
 /**
@@ -9,7 +10,7 @@ import android.graphics.RectF;
  */
 public class RectangularNotificationDrawer extends NotificationDrawer {
     @Override
-    public void draw(Canvas canvas, RectF outerBounds, float notificationCenterX, float notificationCenterY) {
+    public void draw(Canvas canvas, Rect outerBounds, float notificationCenterX, float notificationCenterY) {
         //Adjust notificationCenterY so that it shall not go out of bounds
         float effectiveHeight = mNotificationBounds.height() + mNotificationPadding * 2;
         if (notificationCenterY - effectiveHeight / 2 < outerBounds.top) notificationCenterY = outerBounds.top + effectiveHeight / 2;

@@ -51,11 +51,11 @@ public class MainActivity extends ActionBarActivity {
             //Test Image 1
             circularDrawable1 = new CircularDrawable();
             circularDrawable1.setBitmapOrText(bitmap1);
-            circularDrawable1.setNotificationDrawer(new CircularNotificationDrawer().setNotificationText("5").setNotificationAngle(45).setNotificationColor
-                    (Color.BLACK, Color.parseColor("#FDC301")));
+            circularDrawable1.setNotificationDrawer(new CircularNotificationDrawer().setNotificationSize(36, 52).setNotificationText("5")
+                    .setNotificationAngle(45).setNotificationColor(Color.BLACK, Color.parseColor("#FDC301")));
             circularDrawable1.setBadge(badgeIcon);
 //            circularDrawable1.setNotificationSize(50, 50, 50, 3);
-//          circularDrawable1.setBorder(Color.BLACK, 8);
+          circularDrawable1.setBorder(Color.TRANSPARENT, 12);
 
             //Test Image 2
             circularDrawable2 = new CircularDrawable();
