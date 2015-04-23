@@ -28,5 +28,5 @@ android {
         compile 'com.android.support:appcompat-v7:21.0.3'
 //        compile project (':library')
         //Custom Artifact for CircularImage
-        compile 'com.flipkart.circularImage:library:1.0.2'
+        compile project(':circularImageLibrary')
     }

@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.ImageView;
+
 import com.flipkart.circularImageView.CircularDrawable;
 import com.flipkart.circularImageView.TextDrawer;
+import com.flipkart.circularImageView.notification.CircularNotificationDrawer;
+import com.flipkart.circularImageView.notification.RectangularNotificationDrawer;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -48,18 +51,16 @@ public class MainActivity extends ActionBarActivity {
             //Test Image 1
             circularDrawable1 = new CircularDrawable();
             circularDrawable1.setBitmapOrText(bitmap1);
-            circularDrawable1.setNotificationText("5");
-            circularDrawable1.setNotificationAngle(45);
-            circularDrawable1.setNotificationStyle(CircularDrawable.NotificationStyle.Circle);
-            circularDrawable1.setNotificationColor(Color.BLACK, Color.parseColor("#FDC301"));
+            circularDrawable1.setNotificationDrawer(new CircularNotificationDrawer().setNotificationText("5").setNotificationAngle(45).setNotificationColor
+                    (Color.BLACK, Color.parseColor("#FDC301")));
             circularDrawable1.setBadge(badgeIcon);
+//            circularDrawable1.setNotificationSize(50, 50, 50, 3);
 //          circularDrawable1.setBorder(Color.BLACK, 8);
 
             //Test Image 2
             circularDrawable2 = new CircularDrawable();
             circularDrawable2.setBitmapOrText(bitmap2);
-            circularDrawable2.setNotificationText("5");
-            circularDrawable2.setNotificationAngle(45);
+            circularDrawable2.setNotificationDrawer(new RectangularNotificationDrawer().setNotificationText("5").setNotificationAngle(45));
 //          circularDrawable2.setNotificationStyle(CircularDrawable.NotificationStyle.Circle);
 //          circularDrawable2.setNotificationColor(Color.BLACK, Color.parseColor("#FDC301"));
             circularDrawable2.setBadge(badgeIcon);
@@ -79,10 +80,8 @@ public class MainActivity extends ActionBarActivity {
             //Test Image 4
             circularDrawable4 = new CircularDrawable();
             circularDrawable4.setBitmapOrText(vsTextDrawer, bitmap2);
-            circularDrawable4.setNotificationText("51");
-            circularDrawable4.setNotificationAngle(135);
-            circularDrawable4.setNotificationStyle(CircularDrawable.NotificationStyle.Circle);
-            circularDrawable4.setNotificationColor(Color.WHITE, Color.RED);
+            circularDrawable4.setNotificationDrawer(new CircularNotificationDrawer().setNotificationText("51").setNotificationAngle(135).setNotificationColor
+                    (Color.WHITE, Color.RED));
 //          circularDrawable4.setBadge(badgeIcon);
 //          circularDrawable4.setBorder(Color.BLACK, 4);
 
