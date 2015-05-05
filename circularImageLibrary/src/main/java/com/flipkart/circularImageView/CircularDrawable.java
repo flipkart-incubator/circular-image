@@ -33,6 +33,7 @@ public class CircularDrawable extends Drawable {
     private final Paint mPaint;
     private final Paint mBorderPaint;
     private final Paint mTextPaint;
+    private final Paint mDividerPaint;
 
     private Bitmap badge;
     private final Paint mBadgePaint;
@@ -47,8 +48,8 @@ public class CircularDrawable extends Drawable {
     private ImageView.ScaleType scaleType = ImageView.ScaleType.CENTER_CROP;
 
     private NotificationDrawer notificationDrawer;
-    private Rect bounds;
     private long id;
+    private float dividerWidth;
 
     public enum NotificationStyle {
         Rectangle, Circle
@@ -72,6 +73,10 @@ public class CircularDrawable extends Drawable {
         mBorderPaint.setDither(true);
         mBorderPaint.setStyle(Paint.Style.STROKE);
 
+        mDividerPaint = new Paint();
+        mDividerPaint.setAntiAlias(true);
+        mDividerPaint.setDither(true);
+
         mBadgePaint = new Paint();
         mBadgePaint.setAntiAlias(true);
         mBadgePaint.setDither(true);
@@ -82,7 +87,7 @@ public class CircularDrawable extends Drawable {
         mTextPaint.setLinearText(true);
         mTextPaint.setAntiAlias(true);
         mTextPaint.setDither(true);
-//        mTextPaint.setTextLocale(Locale.ENGLISH);
+
         mTextPaint.setTextAlign(Paint.Align.CENTER);
         //Setting Thin Font space
         if (USE_THIN_FONT) {
@@ -94,7 +99,7 @@ public class CircularDrawable extends Drawable {
         mBorderColor = Color.BLACK;
         mBorderPaint.setColor(mBorderColor);
 
-        drawerHelper = new DrawerHelper(mRect, mPaint, mBorderPaint, mTextPaint, mBackgroundPaint, sourceObjects);
+        drawerHelper = new DrawerHelper(mRect, mPaint, mTextPaint, mBackgroundPaint, sourceObjects);
     }
 
     public void setEnabledDebugging(boolean isEnabledDebugging) {
@@ -144,8 +149,14 @@ public class CircularDrawable extends Drawable {
         }
     }
 
+    public void setDivider(float dividerWidth, int dividerColor) {
+        this.dividerWidth = dividerWidth;
+        this.mDividerPaint.setColor(dividerColor);
+    }
+
     /**
      * Set NotificationDrawer
+     *
      * @param notificationDrawer Notification Drawer
      */
     public void setNotificationDrawer(NotificationDrawer notificationDrawer) {
@@ -154,7 +165,6 @@ public class CircularDrawable extends Drawable {
 
     @Override
     protected void onBoundsChange(Rect bounds) {
-        this.bounds = bounds;
         super.onBoundsChange(bounds);
         //noinspection SuspiciousNameCombination
         mRect.set(mBorderWidth, mBorderWidth, bounds.width() - mBorderWidth, bounds.height() - mBorderWidth);
@@ -169,7 +179,7 @@ public class CircularDrawable extends Drawable {
         }
 
         //Set Local Matrix for Shader of badge
-        if(badge != null) {
+        if (badge != null) {
             mBadgeRect.set(0, 0, mRect.width() / 2.5f, mRect.height() / 2.5f);
             mBadgePaint.getShader().setLocalMatrix(getLocalMatrixForBottomCorner(mRect, mBadgeRect, badge));
         }
@@ -177,7 +187,7 @@ public class CircularDrawable extends Drawable {
         //Set Text size for drawing text
         mTextPaint.setTextSize((bounds.height() - 2 * mBorderWidth) * 0.4f);
 
-        if(this.notificationDrawer != null) notificationDrawer.onBoundsChange(bounds, mBorderWidth);
+        if (this.notificationDrawer != null) notificationDrawer.onBoundsChange(bounds, mBorderWidth);
     }
 
     public void setId(long id) {
@@ -205,7 +215,43 @@ public class CircularDrawable extends Drawable {
         if (notificationDrawer != null) {
             notificationDrawer.drawNotification(canvas);
         }
+
+        //Draw Dividers
+        if (dividerWidth > 0f) {
+            drawDividers(canvas);
+        }
+
         if (isEnabledDebugging) Log.v("CircularImageView", "Time taken to draw: " + (System.currentTimeMillis() - currentTime) + "ms");
+    }
+
+    private void drawDividers(Canvas canvas) {
+        switch (sourceObjects.size()) {
+            case 2:
+                //Draw a vertical line
+                canvas.drawRect(mRect.centerX() - dividerWidth / 2, mRect.top + mBorderWidth / 2, mRect.centerX() + dividerWidth / 2, mRect.bottom,
+                        mDividerPaint);
+                break;
+
+            case 3:
+                //Draw Vertical Line
+                canvas.drawRect(mRect.centerX() - dividerWidth / 2, mRect.top, mRect.centerX() + dividerWidth / 2, mRect.bottom, mDividerPaint);
+
+                //Draw Horizontal line, from center to right end
+                canvas.drawRect(mRect.centerX(), mRect.centerY() - dividerWidth / 2, mRect.right, mRect.centerY() + dividerWidth / 2, mDividerPaint);
+                break;
+
+            case 4:
+                //Draw Vertical Line
+                canvas.drawRect(mRect.centerX() - dividerWidth / 2, mRect.top, mRect.centerX() + dividerWidth / 2, mRect.bottom, mDividerPaint);
+
+                //Draw Horizontal line
+                canvas.drawRect(mRect.left, mRect.centerY() - dividerWidth / 2, mRect.right, mRect.centerY() + dividerWidth / 2, mDividerPaint);
+                break;
+
+            default:
+            case 1:
+                //Do Nothing, no dividers
+        }
     }
 
     @Override

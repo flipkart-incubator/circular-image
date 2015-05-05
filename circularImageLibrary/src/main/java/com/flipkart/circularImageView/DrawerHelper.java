@@ -14,7 +14,6 @@ import java.util.List;
 public class DrawerHelper {
     private RectF mRect;
     private Paint mPaint;
-    private Paint mBorderPaint;
     private Paint mTextPaint;
     private Paint mBackgroundPaint;
     private List<Object> sourceObjects;
@@ -33,10 +32,9 @@ public class DrawerHelper {
         }
     }
 
-    public DrawerHelper(RectF mRect, Paint mPaint, Paint mBorderPaint, Paint mTextPaint, Paint mBackgroundPaint, List<Object> sourceObjects) {
+    public DrawerHelper(RectF mRect, Paint mPaint, Paint mTextPaint, Paint mBackgroundPaint, List<Object> sourceObjects) {
         this.mRect = mRect;
         this.mPaint = mPaint;
-        this.mBorderPaint = mBorderPaint;
         this.mTextPaint = mTextPaint;
         this.mBackgroundPaint = mBackgroundPaint;
         this.sourceObjects = sourceObjects;

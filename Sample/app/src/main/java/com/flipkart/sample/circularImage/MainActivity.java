@@ -82,12 +82,14 @@ public class MainActivity extends ActionBarActivity {
             circularDrawable4.setBitmapOrText(vsTextDrawer, bitmap2);
             circularDrawable4.setNotificationDrawer(new CircularNotificationDrawer().setNotificationText("51").setNotificationAngle(135).setNotificationColor
                     (Color.WHITE, Color.RED));
+            circularDrawable4.setDivider(4, Color.WHITE);
 //          circularDrawable4.setBadge(badgeIcon);
 //          circularDrawable4.setBorder(Color.BLACK, 4);
 
             //Test Image 5
             circularDrawable5 = new CircularDrawable();
             circularDrawable5.setBitmapOrText(vsTextDrawer, bitmap2, bitmap1);
+            circularDrawable5.setDivider(4, Color.WHITE);
 //          circularDrawable5.setNotificationText("5");
 //          circularDrawable5.setNotificationAngle(135);
 //          circularDrawable5.setNotificationStyle(CircularDrawable.NotificationStyle.Circle);
@@ -99,6 +101,7 @@ public class MainActivity extends ActionBarActivity {
             circularDrawable6 = new CircularDrawable();
             TextDrawer abTextDrawer = new TextDrawer().setText("AB").setBackgroundColor(Color.RED).setTextColor(Color.WHITE);
             circularDrawable6.setBitmapOrText(vsTextDrawer, bitmap2, bitmap1, abTextDrawer);
+            circularDrawable6.setDivider(4, Color.WHITE);
 //          circularDrawable6.setNotificationText("5");
 //          circularDrawable6.setNotificationAngle(135);
 //          circularDrawable6.setNotificationStyle(CircularDrawable.NotificationStyle.Circle);
