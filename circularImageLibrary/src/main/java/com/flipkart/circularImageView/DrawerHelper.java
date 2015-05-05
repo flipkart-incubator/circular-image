@@ -137,10 +137,12 @@ public class DrawerHelper {
             mTextPaint.setTextSize(previousTextSize * 0.7f);
             if (halfNumber == 1) {
                 canvas.drawArc(mRect, 90, 180, false, mBackgroundPaint);
-                canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX() / 2, mRect.centerY() - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
+                canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX() - (mRect.centerX() - mRect.left) / 2, mRect.centerY
+                        () - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
             } else {
                 canvas.drawArc(mRect, 270, 180, false, mBackgroundPaint);
-                canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), 3 * mRect.centerX() / 2, mRect.centerY() - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
+                canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX() + (mRect.centerX() - mRect.left) / 2, mRect.centerY
+                        () - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
             }
 
             //Restore the textSize, once the drawing is done, so that new drawing can scale appropriately
@@ -185,23 +187,23 @@ public class DrawerHelper {
             switch (quarterNumber) {
                 case 1:
                     canvas.drawArc(mRect, 180, 90, true, mBackgroundPaint);
-                    canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX() * 0.6f, mRect.centerY() * 0.64f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
-                            mTextPaint);
+                    canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX() - (mRect.centerX() - mRect.left) * 0.4f, mRect
+                            .centerY() - (mRect.centerY() - mRect.top) * 0.36f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
                     break;
                 case 2:
                     canvas.drawArc(mRect, 90, 90, true, mBackgroundPaint);
-                    canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX() * 0.6f, mRect.centerY() * 1.35f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
-                            mTextPaint);
+                    canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX() - (mRect.centerX() - mRect.left) * 0.4f, mRect
+                            .centerY() + (mRect.centerY() - mRect.top) * 0.35f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
                     break;
                 case 3:
                     canvas.drawArc(mRect, 270, 90, true, mBackgroundPaint);
-                    canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX() * 1.4f, mRect.centerY() * 0.64f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
-                            mTextPaint);
+                    canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX() + (mRect.centerX() - mRect.left) * 0.4f, mRect
+                            .centerY() - (mRect.centerY() - mRect.top) * 0.36f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
                     break;
                 case 4:
                     canvas.drawArc(mRect, 0, 90, true, mBackgroundPaint);
-                    canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX() * 1.4f, mRect.centerY() * 1.35f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2),
-                            mTextPaint);
+                    canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX() + (mRect.centerX() - mRect.left) * 0.4f, mRect
+                            .centerY() + (mRect.centerY() - mRect.top) * 0.35f - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
                     break;
             }
 

@@ -25,6 +25,7 @@ import static com.flipkart.circularImageView.DrawerHelper.DrawingType;
 
 @SuppressWarnings("unused")
 public class CircularDrawable extends Drawable {
+    private static final String TAG = CircularDrawable.class.getName();
     private final static boolean USE_THIN_FONT = false;
 
     private final RectF mRect;
@@ -167,7 +168,7 @@ public class CircularDrawable extends Drawable {
     protected void onBoundsChange(Rect bounds) {
         super.onBoundsChange(bounds);
         //noinspection SuspiciousNameCombination
-        mRect.set(mBorderWidth, mBorderWidth, bounds.width() - mBorderWidth, bounds.height() - mBorderWidth);
+        mRect.set(bounds.left + mBorderWidth, bounds.top + mBorderWidth, bounds.right - mBorderWidth, bounds.bottom - mBorderWidth);
 
         for (int i = 0; i < sourceObjects.size(); i++) {
             Object sourceObject = sourceObjects.get(i);
@@ -188,6 +189,7 @@ public class CircularDrawable extends Drawable {
         mTextPaint.setTextSize((bounds.height() - 2 * mBorderWidth) * 0.4f);
 
         if (this.notificationDrawer != null) notificationDrawer.onBoundsChange(bounds, mBorderWidth);
+
     }
 
     public void setId(long id) {
@@ -206,6 +208,11 @@ public class CircularDrawable extends Drawable {
         //Draw border
         if (mBorderWidth > 0) canvas.drawCircle(mRect.centerX(), mRect.centerY(), mRect.width() / 2 + mBorderWidth / 2 - 1, mBorderPaint);
 
+        //Draw Dividers
+        if (dividerWidth > 0f) {
+            drawDividers(canvas);
+        }
+
         //Draw Badge
         if (badge != null) {
             canvas.drawCircle(mRect.right - mBadgeRect.width() / 2, mRect.bottom - mBadgeRect.height() / 2, mBadgeRect.width() / 2, mBadgePaint);
@@ -214,11 +221,6 @@ public class CircularDrawable extends Drawable {
         //Draw Notification
         if (notificationDrawer != null) {
             notificationDrawer.drawNotification(canvas);
-        }
-
-        //Draw Dividers
-        if (dividerWidth > 0f) {
-            drawDividers(canvas);
         }
 
         if (isEnabledDebugging) Log.v("CircularImageView", "Time taken to draw: " + (System.currentTimeMillis() - currentTime) + "ms");

@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -79,7 +82,7 @@ public class MainActivity extends ActionBarActivity {
 
             //Test Image 4
             circularDrawable4 = new CircularDrawable();
-            circularDrawable4.setBitmapOrText(vsTextDrawer, bitmap2);
+            circularDrawable4.setBitmapOrText(bitmap2, bitmap2);
             circularDrawable4.setNotificationDrawer(new CircularNotificationDrawer().setNotificationText("51").setNotificationAngle(135).setNotificationColor
                     (Color.WHITE, Color.RED));
             circularDrawable4.setDivider(4, Color.WHITE);

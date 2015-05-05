@@ -40,20 +40,20 @@ public class MatrixGenerator {
 
     private void setMatrixForHalfCircle(Matrix matrix, Bitmap bitmap, DrawerHelper.DrawingType drawingType) {
         float scale;
-        if (bitmap.getWidth() < mRect.width() / 2) {
+        if (bitmap.getWidth() < bitmap.getHeight()) {
             //Portrait
             scale = mRect.width() / bitmap.getWidth();
             matrix.setScale(scale, scale);
             //Portrait we don't want to translate to middle, since most of the faces are in top area, not in center
-            matrix.postTranslate(mBorderWidth, mBorderWidth);
+            matrix.postTranslate(mRect.left + mBorderWidth, mRect.top + mBorderWidth);
         } else {
             //Landscape
             scale = mRect.height() / bitmap.getHeight();
             float difference;
-            if (drawingType.getPosition() == 1) difference = mRect.width() / 2 + 2 * mBorderWidth - bitmap.getWidth() * scale;
-            else difference = 3 * mRect.width() / 2 + 2 * mBorderWidth - bitmap.getWidth() * scale;
+            if (drawingType.getPosition() == 1) difference = (bitmap.getWidth() * scale  - mRect.width() / 2) * -1 / 2 + mBorderWidth;
+            else difference = (bitmap.getWidth() * scale  - 3 * mRect.width() / 2) * -1 / 2 + mBorderWidth;
             matrix.setScale(scale, scale);
-            matrix.postTranslate(difference / 2, mBorderWidth);
+            matrix.postTranslate(mRect.left + difference, mRect.top + mBorderWidth);
         }
     }
 
@@ -65,13 +65,13 @@ public class MatrixGenerator {
             matrix.setScale(scale, scale);
             //Portrait we don't want to translate to middle, since most of the faces are in top area, not in center
             matrix.setScale(scale, scale);
-            matrix.postTranslate(mBorderWidth, mBorderWidth);
+            matrix.postTranslate(mRect.left + mBorderWidth, mRect.top + mBorderWidth);
         } else {
             //Landscape
             scale = mRect.height() / bitmap.getHeight();
             float difference = mRect.width() + 2 * mBorderWidth - bitmap.getWidth() * scale;
             matrix.setScale(scale, scale);
-            matrix.postTranslate(difference / 2, mBorderWidth);
+            matrix.postTranslate(mRect.left + difference / 2, mRect.top + mBorderWidth);
         }
     }
 
@@ -104,7 +104,7 @@ public class MatrixGenerator {
                     translateY = mBorderWidth + mRect.height() / 2;
                     break;
             }
-            matrix.postTranslate(translateX, translateY);
+            matrix.postTranslate(mRect.left +translateX,mRect.top + translateY);
         } else {
             //Landscape
             scale = mRect.height() / (2 * bitmap.getHeight());
@@ -132,7 +132,7 @@ public class MatrixGenerator {
             }
 
             matrix.setScale(scale, scale);
-            matrix.postTranslate(translateX, translateY);
+            matrix.postTranslate(mRect.left + translateX, mRect.top + translateY);
         }
     }
 

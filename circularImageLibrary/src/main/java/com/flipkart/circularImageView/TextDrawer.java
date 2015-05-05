@@ -45,5 +45,4 @@ public class TextDrawer {
     public String getText() {
         return text;
     }
-
 }
