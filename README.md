@@ -11,7 +11,7 @@ CircularImage is an android library to create a configurable CircularDrawables. 
 6. Optimised to reduce overdraw.
 
 ####Screenshot
-![Alt text](/Screenshots/Screenshot_2015-05-14-18-24-34.png?raw=true "Screenshot")
+![Alt text](/Screenshots/Screenshot_2015-05-14-18-24-34.png?raw=true "Screenshot")     ![Alt text](/Screenshots/Screenshot_overdraw.png?raw=true "Screenshot Overdraw")
 
 ####Sample Code
 ```
@@ -26,3 +26,5 @@ circularDrawable.setBorder(Color.BLACK, 4);
 //Set the drawable to imageView
 imageView.setImageDrawable(circularDrawable)
 ```
+
+For more details, please refer the sample application.
