@@ -46,8 +46,8 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.katrina_kaif);
-            Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.jennifer_aniston);
+            Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.jennifer_aniston);
+            Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.katrina_kaif);
             Bitmap badgeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.flipkart_round);
             Log.v(MainActivity.class.getName(), "Height:" + bitmap1.getHeight() + " Width:" + bitmap1.getWidth());
 
@@ -82,7 +82,7 @@ public class MainActivity extends ActionBarActivity {
 
             //Test Image 4
             circularDrawable4 = new CircularDrawable();
-            circularDrawable4.setBitmapOrText(bitmap2, bitmap2);
+            circularDrawable4.setBitmapOrText(bitmap1, bitmap2);
             circularDrawable4.setNotificationDrawer(new CircularNotificationDrawer().setNotificationText("51").setNotificationAngle(135).setNotificationColor
                     (Color.WHITE, Color.RED));
             circularDrawable4.setDivider(4, Color.WHITE);

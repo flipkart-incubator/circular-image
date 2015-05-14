@@ -44,8 +44,13 @@ public class MatrixGenerator {
             //Portrait
             scale = mRect.width() / bitmap.getWidth();
             matrix.setScale(scale, scale);
+
+            float shift;
+            if(drawingType.getPosition() == 1) shift = (bitmap.getWidth() * scale  - mRect.width() / 2) * -1 / 2;
+            else shift = (bitmap.getWidth() * scale  - mRect.width() / 2) / 2;
+
             //Portrait we don't want to translate to middle, since most of the faces are in top area, not in center
-            matrix.postTranslate(mRect.left + mBorderWidth, mRect.top + mBorderWidth);
+            matrix.postTranslate(mRect.left + shift + mBorderWidth, mRect.top + mBorderWidth);
         } else {
             //Landscape
             scale = mRect.height() / bitmap.getHeight();
