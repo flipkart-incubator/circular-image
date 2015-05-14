@@ -5,4 +5,5 @@ CircularImage is an android library to create a configurable CircularDrawables. 
 2. Supports drawing of text, if bitmaps are not available.
 3. Supports drawing of different types of configurable notifications, at any random angle x from horizontal.
 4. Supports badges at a fixed position.
-5. Optimised to reduce overdraw.
+5. Supports configurable dividers and borders.
+6. Optimised to reduce overdraw.
