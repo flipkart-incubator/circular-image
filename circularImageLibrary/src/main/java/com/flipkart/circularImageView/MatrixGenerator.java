@@ -70,13 +70,13 @@ public class MatrixGenerator {
             matrix.setScale(scale, scale);
             //Portrait we don't want to translate to middle, since most of the faces are in top area, not in center
             matrix.setScale(scale, scale);
-            matrix.postTranslate(mRect.left + mBorderWidth, mRect.top + mBorderWidth);
+            matrix.postTranslate(mRect.left, mRect.top);
         } else {
             //Landscape
             scale = mRect.height() / bitmap.getHeight();
-            float difference = mRect.width() + 2 * mBorderWidth - bitmap.getWidth() * scale;
+            float difference = mRect.width() - bitmap.getWidth() * scale;
             matrix.setScale(scale, scale);
-            matrix.postTranslate(mRect.left + difference / 2, mRect.top + mBorderWidth);
+            matrix.postTranslate(mRect.left + difference / 2, mRect.top);
         }
     }
 

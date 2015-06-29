@@ -19,13 +19,15 @@ public class CircularNotificationDrawer extends NotificationDrawer {
 
     @Override
     public void draw(Canvas canvas, Rect outerBounds, float notificationCenterX, float notificationCenterY) {
+        if (outerBounds == null) return;
+
         //Adjust notificationCenterY so that it shall not go out of bounds
         float effectiveWidth = getEffectiveWidth();
 
         if (notificationCenterY - effectiveWidth / 2 < outerBounds.top) notificationCenterY = outerBounds.top + effectiveWidth / 2;
         else if (notificationCenterY + effectiveWidth / 2 > outerBounds.bottom) notificationCenterY = outerBounds.bottom - effectiveWidth / 2;
 
-        if(notificationCenterX + effectiveWidth / 2 > outerBounds.right) notificationCenterX = outerBounds.right - effectiveWidth /2;
+        if (notificationCenterX + effectiveWidth / 2 > outerBounds.right) notificationCenterX = outerBounds.right - effectiveWidth / 2;
         else if (notificationCenterX - effectiveWidth / 2 < outerBounds.left) notificationCenterX = outerBounds.left + effectiveWidth / 2;
 
         canvas.drawCircle(notificationCenterX, notificationCenterY, effectiveWidth / 2, mNotificationPaint);
@@ -41,7 +43,7 @@ public class CircularNotificationDrawer extends NotificationDrawer {
     }
 
     private float getEffectiveWidth() {
-        if(radius == null) return mNotificationBounds.width() + mNotificationPadding * 2;
+        if (radius == null) return mNotificationBounds.width() + mNotificationPadding * 2;
         else return 2 * radius;
     }
 }
