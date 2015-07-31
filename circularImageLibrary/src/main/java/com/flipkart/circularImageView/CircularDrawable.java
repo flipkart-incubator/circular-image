@@ -13,7 +13,6 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.flipkart.circularImageView.notification.NotificationDrawer;
@@ -41,7 +40,6 @@ public class CircularDrawable extends Drawable {
     private final RectF mBadgeRect;
 
     private DrawerHelper drawerHelper;
-    private boolean isEnabledDebugging = false;
 
     //Objects (Text or Bitmap) that shall be drawn in CircleDrawable
     private List<Object> sourceObjects = new ArrayList<>();
@@ -51,6 +49,7 @@ public class CircularDrawable extends Drawable {
     private NotificationDrawer notificationDrawer;
     private long id;
     private float dividerWidth;
+    private Object tag;
 
     public enum NotificationStyle {
         Rectangle, Circle
@@ -103,10 +102,6 @@ public class CircularDrawable extends Drawable {
         drawerHelper = new DrawerHelper(mRect, mPaint, mTextPaint, mBackgroundPaint, sourceObjects);
     }
 
-    public void setEnabledDebugging(boolean isEnabledDebugging) {
-        this.isEnabledDebugging = isEnabledDebugging;
-    }
-
     public void setBorder(int color, float width) {
         mBorderWidth = width;
         mBorderPaint.setStrokeWidth(width);
@@ -131,9 +126,9 @@ public class CircularDrawable extends Drawable {
      * As of now we only support FOUR sources, and hence only first four will be considered.
      * Also, the order of drawing is same as the order of arguments.
      *
-     * @param sources Either "Bitmap" or "TextDrawer" which needs to be drawn.
+     * @param sources Either "Bitmap" or "TextDrawer" or "IconDrawer" which needs to be drawn.
      */
-    public void setBitmapOrText(Object... sources) throws IllegalArgumentException {
+    public void setBitmapOrTextOrIcon(Object... sources) throws IllegalArgumentException {
         sourceObjects.clear();
         for (int i = 0; i < sources.length && i < 4; i++) {
             if (sources[i] instanceof Bitmap) {
@@ -142,10 +137,15 @@ public class CircularDrawable extends Drawable {
                 drawer.bitmap = bitmap;
                 drawer.bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
                 sourceObjects.add(drawer);
-            } else if (sources[i] instanceof TextDrawer) {
+            }
+            else if (sources[i] instanceof TextDrawer) {
                 sourceObjects.add(sources[i]);
-            } else {
-                throw new IllegalArgumentException("Arguments can either be instance of Bitmap or TextDrawer");
+            }
+            else if (sources[i] instanceof IconDrawer) {
+                sourceObjects.add(sources[i]);
+            }
+            else {
+                throw new IllegalArgumentException("Arguments can either be instance of Bitmap or TextDrawer or IconDrawer");
             }
         }
     }
@@ -196,13 +196,22 @@ public class CircularDrawable extends Drawable {
         this.id = id;
     }
 
+    public void setTag(Object tag) {
+        this.tag = tag;
+    }
+
+    public Object getTag() {
+        return tag;
+    }
+
     public long getId() {
         return id;
     }
 
     @Override
     public void draw(Canvas canvas) {
-        long currentTime = System.currentTimeMillis();
+//        long currentTime = System.currentTimeMillis();
+
         drawerHelper.drawComplexCircle(canvas);
 
         //Draw border
@@ -223,7 +232,7 @@ public class CircularDrawable extends Drawable {
             notificationDrawer.drawNotification(canvas);
         }
 
-        if (isEnabledDebugging) Log.v("CircularImageView", "Time taken to draw: " + (System.currentTimeMillis() - currentTime) + "ms");
+//        if (isEnabledDebugging) Log.v("CircularImageView", "Time taken to draw: " + (System.currentTimeMillis() - currentTime) + "ms");
     }
 
     private void drawDividers(Canvas canvas) {

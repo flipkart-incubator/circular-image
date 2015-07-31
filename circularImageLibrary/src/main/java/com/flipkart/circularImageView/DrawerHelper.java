@@ -1,8 +1,10 @@
 package com.flipkart.circularImageView;
 
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -23,8 +25,9 @@ public class DrawerHelper {
 
         int position;
 
-        public void setPosition(int position) {
+        public DrawingType setPosition(int position) {
             this.position = position;
+            return this;
         }
 
         public int getPosition() {
@@ -108,6 +111,13 @@ public class DrawerHelper {
             canvas.drawCircle(mRect.centerX(), mRect.centerY(), mRect.width() / 2, mBackgroundPaint);
             canvas.drawText(message, 0, message.length() > 2 ? 2 : message.length(), mRect.centerX(), mRect.centerY() - ((mTextPaint.descent() + mTextPaint
                     .ascent()) / 2), mTextPaint);
+        } else if (sourceObject instanceof IconDrawer) {
+            //Its a text, write text
+            IconDrawer iconDrawer = (IconDrawer) sourceObject;
+            mBackgroundPaint.setColor(iconDrawer.getBackgroundColor());
+            canvas.drawCircle(mRect.centerX(), mRect.centerY(), mRect.width() / 2, mBackgroundPaint);
+            Matrix matrix = new IconMatrixGenerator(mRect, 0, iconDrawer.getMargin()).generateMatrix(ImageView.ScaleType.CENTER_CROP, iconDrawer.getIcon(), DrawingType.FULL_CIRCLE, true);
+            canvas.drawBitmap(iconDrawer.getIcon(), matrix, null);
         }
     }
 
@@ -147,6 +157,23 @@ public class DrawerHelper {
 
             //Restore the textSize, once the drawing is done, so that new drawing can scale appropriately
             mTextPaint.setTextSize(previousTextSize);
+        }
+
+        else if (sourceObject instanceof IconDrawer) {
+            //Its a text
+            IconDrawer iconDrawer = (IconDrawer) sourceObject;
+            mBackgroundPaint.setColor(iconDrawer.getBackgroundColor());
+            float previousTextSize = mTextPaint.getTextSize();
+            mTextPaint.setTextSize(previousTextSize * 0.7f);
+            if (halfNumber == 1) {
+                canvas.drawArc(mRect, 90, 180, false, mBackgroundPaint);
+                Matrix matrix = new IconMatrixGenerator(mRect, 0, iconDrawer.getMargin()).generateMatrix(ImageView.ScaleType.CENTER_CROP, iconDrawer.getIcon(), DrawingType.HALF_CIRCLE.setPosition(1), true);
+                canvas.drawBitmap(iconDrawer.getIcon(), matrix, null);
+            } else {
+                canvas.drawArc(mRect, 270, 180, false, mBackgroundPaint);
+                Matrix matrix = new IconMatrixGenerator(mRect, 0, iconDrawer.getMargin()).generateMatrix(ImageView.ScaleType.CENTER_CROP, iconDrawer.getIcon(), DrawingType.HALF_CIRCLE.setPosition(0), true);
+                canvas.drawBitmap(iconDrawer.getIcon(), matrix, null);
+            }
         }
     }
 
@@ -209,6 +236,34 @@ public class DrawerHelper {
 
             //Restore the textSize, once the drawing is done, so that new drawing can scale appropriately
             mTextPaint.setTextSize(previousTextSize);
+        }
+        else if (sourceObject instanceof IconDrawer) {
+            //Its a text
+            IconDrawer iconDrawer = (IconDrawer) sourceObject;
+            mBackgroundPaint.setColor(iconDrawer.getBackgroundColor());
+
+            switch (quarterNumber) {
+                case 1:
+                    canvas.drawArc(mRect, 180, 90, true, mBackgroundPaint);
+                    Matrix matrix = new IconMatrixGenerator(mRect, 0, iconDrawer.getMargin()).generateMatrix(ImageView.ScaleType.CENTER_CROP, iconDrawer.getIcon(), DrawingType.QUARTER_CIRCLE.setPosition(1), true);
+                    canvas.drawBitmap(iconDrawer.getIcon(), matrix, null);
+                    break;
+                case 2:
+                    canvas.drawArc(mRect, 90, 90, true, mBackgroundPaint);
+                    Matrix matrix1 = new IconMatrixGenerator(mRect, 0, iconDrawer.getMargin()).generateMatrix(ImageView.ScaleType.CENTER_CROP, iconDrawer.getIcon(), DrawingType.QUARTER_CIRCLE.setPosition(2), true);
+                    canvas.drawBitmap(iconDrawer.getIcon(), matrix1, null);
+                    break;
+                case 3:
+                    canvas.drawArc(mRect, 270, 90, true, mBackgroundPaint);
+                    Matrix matrix3 = new IconMatrixGenerator(mRect, 0, iconDrawer.getMargin()).generateMatrix(ImageView.ScaleType.CENTER_CROP, iconDrawer.getIcon(), DrawingType.QUARTER_CIRCLE.setPosition(3), true);
+                    canvas.drawBitmap(iconDrawer.getIcon(), matrix3, null);
+                    break;
+                case 4:
+                    canvas.drawArc(mRect, 0, 90, true, mBackgroundPaint);
+                    Matrix matrix4 = new IconMatrixGenerator(mRect, 0, iconDrawer.getMargin()).generateMatrix(ImageView.ScaleType.CENTER_CROP, iconDrawer.getIcon(), DrawingType.QUARTER_CIRCLE.setPosition(4), true);
+                    canvas.drawBitmap(iconDrawer.getIcon(), matrix4, null);
+                    break;
+            }
         }
     }
 }
