@@ -39,14 +39,15 @@ public class CircularDrawable extends Drawable {
     private final Paint mBadgePaint;
     private final RectF mBadgeRect;
 
-    private DrawerHelper drawerHelper;
-
     //Objects (Text or Bitmap) that shall be drawn in CircleDrawable
     private List<Object> sourceObjects = new ArrayList<>();
 
     private ImageView.ScaleType scaleType = ImageView.ScaleType.CENTER_CROP;
 
     private NotificationDrawer notificationDrawer;
+    private DrawerHelper drawerHelper;
+    private OverlayArcDrawer overlayArcDrawer;
+
     private long id;
     private float dividerWidth;
     private Object tag;
@@ -110,6 +111,10 @@ public class CircularDrawable extends Drawable {
         mBorderPaint.setColor(mBorderColor);
     }
 
+    public void setOverlayArcDrawer(OverlayArcDrawer overlayArcDrawer) {
+        this.overlayArcDrawer = overlayArcDrawer;
+    }
+
     /**
      * Provide Icon for Badge
      *
@@ -137,14 +142,11 @@ public class CircularDrawable extends Drawable {
                 drawer.bitmap = bitmap;
                 drawer.bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
                 sourceObjects.add(drawer);
-            }
-            else if (sources[i] instanceof TextDrawer) {
+            } else if (sources[i] instanceof TextDrawer) {
                 sourceObjects.add(sources[i]);
-            }
-            else if (sources[i] instanceof IconDrawer) {
+            } else if (sources[i] instanceof IconDrawer) {
                 sourceObjects.add(sources[i]);
-            }
-            else {
+            } else {
                 throw new IllegalArgumentException("Arguments can either be instance of Bitmap or TextDrawer or IconDrawer");
             }
         }
@@ -179,6 +181,10 @@ public class CircularDrawable extends Drawable {
             }
         }
 
+        if(overlayArcDrawer != null) {
+            overlayArcDrawer.setBounds(bounds);
+        }
+
         //Set Local Matrix for Shader of badge
         if (badge != null) {
             mBadgeRect.set(0, 0, mRect.width() / 2.5f, mRect.height() / 2.5f);
@@ -188,7 +194,8 @@ public class CircularDrawable extends Drawable {
         //Set Text size for drawing text
         mTextPaint.setTextSize((bounds.height() - 2 * mBorderWidth) * 0.4f);
 
-        if (this.notificationDrawer != null) notificationDrawer.onBoundsChange(bounds, mBorderWidth);
+        if (this.notificationDrawer != null)
+            notificationDrawer.onBoundsChange(bounds, mBorderWidth);
 
     }
 
@@ -215,11 +222,16 @@ public class CircularDrawable extends Drawable {
         drawerHelper.drawComplexCircle(canvas);
 
         //Draw border
-        if (mBorderWidth > 0) canvas.drawCircle(mRect.centerX(), mRect.centerY(), mRect.width() / 2 + mBorderWidth / 2 - 1, mBorderPaint);
+        if (mBorderWidth > 0)
+            canvas.drawCircle(mRect.centerX(), mRect.centerY(), mRect.width() / 2 + mBorderWidth / 2 - 1, mBorderPaint);
 
         //Draw Dividers
         if (dividerWidth > 0f) {
             drawDividers(canvas);
+        }
+
+        if(overlayArcDrawer != null) {
+            canvas.drawArc(new RectF(mRect.left, mRect.top, mRect.right, mRect.bottom), overlayArcDrawer.getStartAngle(), overlayArcDrawer.getSwipeAngle(), false, overlayArcDrawer.getPaint());
         }
 
         //Draw Badge

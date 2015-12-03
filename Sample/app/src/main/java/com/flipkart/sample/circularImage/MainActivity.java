@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.flipkart.circularImageView.CircularDrawable;
 import com.flipkart.circularImageView.IconDrawer;
+import com.flipkart.circularImageView.OverlayArcDrawer;
 import com.flipkart.circularImageView.TextDrawer;
 import com.flipkart.circularImageView.notification.CircularNotificationDrawer;
 import com.flipkart.circularImageView.notification.RectangularNotificationDrawer;
@@ -38,6 +39,8 @@ public class MainActivity extends ActionBarActivity {
         private CircularDrawable circularDrawable7;
         private CircularDrawable circularDrawable8;
         private CircularDrawable circularDrawable9;
+        private CircularDrawable circularDrawable10;
+        private CircularDrawable circularDrawable11;
         private ProgressDialog loadingDialog;
 
         @Override
@@ -50,6 +53,7 @@ public class MainActivity extends ActionBarActivity {
         protected Void doInBackground(Void... params) {
             Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.jennifer_aniston);
             Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.katrina_kaif);
+            Bitmap shopFrontBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.shop_front);
             Bitmap badgeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.flipkart_round);
             Log.v(MainActivity.class.getName(), "Height:" + bitmap1.getHeight() + " Width:" + bitmap1.getWidth());
 
@@ -71,15 +75,27 @@ public class MainActivity extends ActionBarActivity {
             circularDrawable2.setBadge(badgeIcon);
             circularDrawable2.setBorder(Color.BLACK, 4);
 
+            //Test Image 10
+            circularDrawable10 = new CircularDrawable();
+            circularDrawable10.setBitmapOrTextOrIcon(bitmap2);
+            circularDrawable10.setNotificationDrawer(new RectangularNotificationDrawer().setNotificationText("5").setNotificationAngle(45));
+//            circularDrawable10.setBadge(badgeIcon);
+            circularDrawable10.setBorder(Color.BLACK, 4);
+            circularDrawable10.setOverlayArcDrawer(new OverlayArcDrawer(Color.parseColor("#BB333333"), 30, 120));
+
             //Test Image 3
             circularDrawable3 = new CircularDrawable();
             TextDrawer vsTextDrawer = new TextDrawer().setText("VS").setBackgroundColor(Color.BLUE).setTextColor(Color.WHITE);
             circularDrawable3.setBitmapOrTextOrIcon(vsTextDrawer);
-//          circularDrawable3.setNotificationText("5");
-//          circularDrawable3.setNotificationAngle(45);
-//          circularDrawable3.setNotificationStyle(CircularDrawable.NotificationStyle.Circle);
-//          circularDrawable3.setNotificationColor(Color.BLACK, Color.parseColor("#FDC301"));
             circularDrawable3.setBadge(badgeIcon);
+//          circularDrawable3.setBorder(Color.BLACK, 4);
+
+            //Test Image 11
+            circularDrawable11 = new CircularDrawable();
+            TextDrawer vsTextDrawer1 = new TextDrawer().setText("VS").setBackgroundColor(Color.BLUE).setTextColor(Color.WHITE);
+            circularDrawable11.setBitmapOrTextOrIcon(vsTextDrawer1);
+            circularDrawable11.setBadge(badgeIcon);
+            circularDrawable11.setOverlayArcDrawer(new OverlayArcDrawer(shopFrontBitmap, 210, 120));
 //          circularDrawable3.setBorder(Color.BLACK, 4);
 
             //Test Image 4
@@ -95,10 +111,6 @@ public class MainActivity extends ActionBarActivity {
             circularDrawable5 = new CircularDrawable();
             circularDrawable5.setBitmapOrTextOrIcon(vsTextDrawer, bitmap2, bitmap1);
             circularDrawable5.setDivider(4, Color.WHITE);
-//          circularDrawable5.setNotificationText("5");
-//          circularDrawable5.setNotificationAngle(135);
-//          circularDrawable5.setNotificationStyle(CircularDrawable.NotificationStyle.Circle);
-//          circularDrawable5.setNotificationColor(Color.WHITE, Color.RED);
 //          circularDrawable5.setBadge(badgeIcon);
             circularDrawable5.setBorder(Color.MAGENTA, 8);
 
@@ -163,6 +175,12 @@ public class MainActivity extends ActionBarActivity {
 
             testIcon = (ImageView) findViewById(R.id.iv_test_icon_9);
             testIcon.setImageDrawable(circularDrawable9);
+
+            testIcon = (ImageView) findViewById(R.id.iv_test_icon_10);
+            testIcon.setImageDrawable(circularDrawable10);
+
+            testIcon = (ImageView) findViewById(R.id.iv_test_icon_11);
+            testIcon.setImageDrawable(circularDrawable11);
         }
     }
 
