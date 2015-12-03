@@ -25,6 +25,8 @@ circularDrawable.setBadge(badgeIcon);
 circularDrawable.setBorder(Color.BLACK, 4);
 //Set the drawable to imageView
 imageView.setImageDrawable(circularDrawable)
+//Set the overlay arc
+circularDrawable10.setOverlayArcDrawer(new OverlayArcDrawer(Color.parseColor("#BB333333"), 30, 120));
 ```
 
 For more details, please refer the sample application.
