@@ -141,12 +141,12 @@ public class IconMatrixGenerator {
             switch (drawingType.getPosition()) {
                 case 1:
                     translateX = mPadding + delta;
-                    translateY = mBorderWidth + delta;
+                    translateY = mBorderWidth + delta + mPadding;
                     break;
 
                 case 2:
                     translateX = mPadding + delta;
-                    translateY = mRect.height() / 2 + mBorderWidth;
+                    translateY = mRect.height() / 2 + mBorderWidth + mPadding;
                     break;
 
                 case 3:

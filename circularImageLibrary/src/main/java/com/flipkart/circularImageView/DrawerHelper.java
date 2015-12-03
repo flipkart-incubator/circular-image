@@ -164,7 +164,7 @@ public class DrawerHelper {
             IconDrawer iconDrawer = (IconDrawer) sourceObject;
             mBackgroundPaint.setColor(iconDrawer.getBackgroundColor());
             float previousTextSize = mTextPaint.getTextSize();
-            mTextPaint.setTextSize(previousTextSize * 0.7f);
+
             if (halfNumber == 1) {
                 canvas.drawArc(mRect, 90, 180, false, mBackgroundPaint);
                 Matrix matrix = new IconMatrixGenerator(mRect, 0, iconDrawer.getMargin()).generateMatrix(ImageView.ScaleType.CENTER_CROP, iconDrawer.getIcon(), DrawingType.HALF_CIRCLE.setPosition(1), true);

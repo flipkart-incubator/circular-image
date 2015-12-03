@@ -115,17 +115,17 @@ public class MainActivity extends ActionBarActivity {
 //          circularDrawable6.setBorder(Color.BLUE, 8);
 
             circularDrawable7 = new CircularDrawable();
-            IconDrawer iconDrawer = new IconDrawer(BitmapFactory.decodeResource(getResources(), R.drawable.sample_icon), Color.YELLOW).setMargin(pxFromDp(15));
+            IconDrawer iconDrawer = new IconDrawer(BitmapFactory.decodeResource(getResources(), R.drawable.profile_placeholder), Color.BLACK).setMargin(pxFromDp(15));
             circularDrawable7.setBitmapOrTextOrIcon(iconDrawer);
 
             circularDrawable8 = new CircularDrawable();
-            iconDrawer = new IconDrawer(BitmapFactory.decodeResource(getResources(), R.drawable.sample_icon), Color.WHITE).setMargin(pxFromDp(4));
+            iconDrawer = new IconDrawer(BitmapFactory.decodeResource(getResources(), R.drawable.profile_placeholder), Color.BLUE).setMargin(pxFromDp(6));
             circularDrawable8.setBitmapOrTextOrIcon(bitmap1, iconDrawer);
             circularDrawable8.setDivider(4, Color.WHITE);
 
             circularDrawable9 = new CircularDrawable();
-            iconDrawer = new IconDrawer(BitmapFactory.decodeResource(getResources(), R.drawable.sample_icon), Color.WHITE).setMargin(pxFromDp(1));
-            circularDrawable9.setBitmapOrTextOrIcon(iconDrawer, bitmap1, bitmap2, abTextDrawer);
+            iconDrawer = new IconDrawer(BitmapFactory.decodeResource(getResources(), R.drawable.profile_placeholder), Color.BLUE).setMargin(pxFromDp(4));
+            circularDrawable9.setBitmapOrTextOrIcon(iconDrawer, iconDrawer, iconDrawer, iconDrawer);
             circularDrawable9.setDivider(4, Color.WHITE);
 
             return null;
