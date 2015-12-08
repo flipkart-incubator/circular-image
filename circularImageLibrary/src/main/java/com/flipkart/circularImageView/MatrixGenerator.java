@@ -153,13 +153,13 @@ public class MatrixGenerator {
             matrix.setScale(scale, scale);
             //Portrait we don't want to translate to middle, since most of the faces are in top area, not in center
             matrix.setScale(scale, scale);
-            matrix.postTranslate(mBorderWidth + containerRect.width() - badgeRect.width(), mBorderWidth + containerRect.height() - badgeRect.height());
+            matrix.postTranslate(containerRect.left + mBorderWidth + containerRect.width() - badgeRect.width(), containerRect.top +  mBorderWidth + containerRect.height() - badgeRect.height());
         } else {
             //Landscape
             scale = badgeRect.height() / bitmap.getHeight();
             float difference = badgeRect.width() + 2 * mBorderWidth - bitmap.getWidth() * scale;
             matrix.setScale(scale, scale);
-            matrix.postTranslate(difference / 2 + containerRect.width() - badgeRect.width(), mBorderWidth + containerRect.height() - badgeRect.height());
+            matrix.postTranslate(containerRect.left + difference / 2 + containerRect.width() - badgeRect.width(), containerRect.top + mBorderWidth + containerRect.height() - badgeRect.height());
         }
         return matrix;
     }

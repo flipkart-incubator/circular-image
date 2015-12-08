@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -53,7 +56,7 @@ public class MainActivity extends ActionBarActivity {
         protected Void doInBackground(Void... params) {
             Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.jennifer_aniston);
             Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.katrina_kaif);
-            Bitmap shopFrontBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.shop_front);
+            Bitmap shopFrontBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.seller_icon);
             Bitmap badgeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.flipkart_round);
             Log.v(MainActivity.class.getName(), "Height:" + bitmap1.getHeight() + " Width:" + bitmap1.getWidth());
 
@@ -180,11 +183,21 @@ public class MainActivity extends ActionBarActivity {
             testIcon.setImageDrawable(circularDrawable10);
 
             testIcon = (ImageView) findViewById(R.id.iv_test_icon_11);
-            testIcon.setImageDrawable(circularDrawable11);
+            testIcon.setImageDrawable(shadowify(circularDrawable11));
         }
     }
 
     private float pxFromDp(int dpValue) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, getResources().getDisplayMetrics());
+    }
+
+    private Drawable shadowify(Drawable drawable) {
+        Drawable shadow = getResources().getDrawable(R.drawable.chat_bubble_shadow);
+        InsetDrawable insetDrawable = new InsetDrawable(drawable, (int) dpToPx(20));
+        return new LayerDrawable(new Drawable[]{shadow, insetDrawable});
+    }
+
+    private float dpToPx(int dp) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 }

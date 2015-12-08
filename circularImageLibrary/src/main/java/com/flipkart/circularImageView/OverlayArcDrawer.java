@@ -63,7 +63,9 @@ public class OverlayArcDrawer {
             } else  {
                 scalex = (double)bounds.width() / (double) bitmap.getWidth();
             }
+
             matrix.setScale((float) scalex, (float) scaley);
+            matrix.setTranslate(0, 0);
             overlayShader.setLocalMatrix(matrix);
         }
     }
