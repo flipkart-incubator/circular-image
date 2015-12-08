@@ -90,6 +90,7 @@ public class MainActivity extends ActionBarActivity {
             circularDrawable3 = new CircularDrawable();
             TextDrawer vsTextDrawer = new TextDrawer().setText("VS").setBackgroundColor(Color.BLUE).setTextColor(Color.WHITE);
             circularDrawable3.setBitmapOrTextOrIcon(vsTextDrawer);
+            circularDrawable3.setOverlayArcDrawer(new OverlayArcDrawer(shopFrontBitmap, 210, 120));
             circularDrawable3.setBadge(badgeIcon);
 //          circularDrawable3.setBorder(Color.BLACK, 4);
 
