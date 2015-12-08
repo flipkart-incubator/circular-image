@@ -65,7 +65,9 @@ public class OverlayArcDrawer {
             }
 
             matrix.setScale((float) scalex, (float) scaley);
-            matrix.setTranslate(0, 0);
+            matrix.postTranslate(bounds.left, bounds.top);
+            System.out.println(matrix.toShortString());
+//            matrix.setTranslate(0, 0);
             overlayShader.setLocalMatrix(matrix);
         }
     }
