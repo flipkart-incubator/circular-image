@@ -31,9 +31,13 @@ public class MatrixGenerator {
                         setMatrixForHalfCircle(matrix, bitmap, drawingType);
                         break;
                     case FULL_CIRCLE:
-                        setMatrixForFullCircle(matrix, bitmap);
+                        setMatrixForFullCircle(scaleType, matrix, bitmap);
                         break;
                 }
+                break;
+            case FIT_CENTER:
+                setMatrixForFullCircle(scaleType, matrix, bitmap);
+                break;
         }
         return matrix;
     }
@@ -47,8 +51,9 @@ public class MatrixGenerator {
             matrix.setScale(scale, scale);
 
             float shift;
-            if(drawingType.getPosition() == 1) shift = (bitmap.getWidth() * scale  - mRect.width() / 2) * -1 / 2;
-            else shift = (bitmap.getWidth() * scale  - mRect.width() / 2) / 2;
+            if (drawingType.getPosition() == 1)
+                shift = (bitmap.getWidth() * scale - mRect.width() / 2) * -1 / 2;
+            else shift = (bitmap.getWidth() * scale - mRect.width() / 2) / 2;
 
             //Portrait we don't want to translate to middle, since most of the faces are in top area, not in center
             matrix.postTranslate(mRect.left + shift + mBorderWidth, mRect.top + mBorderWidth);
@@ -56,28 +61,39 @@ public class MatrixGenerator {
             //Landscape
             scale = mRect.height() / bitmap.getHeight();
             float difference;
-            if (drawingType.getPosition() == 1) difference = (bitmap.getWidth() * scale  - mRect.width() / 2) * -1 / 2 + mBorderWidth;
-            else difference = (bitmap.getWidth() * scale  - 3 * mRect.width() / 2) * -1 / 2 + mBorderWidth;
+            if (drawingType.getPosition() == 1)
+                difference = (bitmap.getWidth() * scale - mRect.width() / 2) * -1 / 2 + mBorderWidth;
+            else
+                difference = (bitmap.getWidth() * scale - 3 * mRect.width() / 2) * -1 / 2 + mBorderWidth;
             matrix.setScale(scale, scale);
             matrix.postTranslate(mRect.left + difference, mRect.top + mBorderWidth);
         }
     }
 
-    private void setMatrixForFullCircle(Matrix matrix, Bitmap bitmap) {
+    private void setMatrixForFullCircle(ImageView.ScaleType scaleType, Matrix matrix, Bitmap bitmap) {
         float scale;
-        if (bitmap.getHeight() > bitmap.getWidth()) {
-            //Portrait
-            scale = (mRect.width())/ bitmap.getWidth();
-            matrix.setScale(scale, scale);
-            //Portrait we don't want to translate to middle, since most of the faces are in top area, not in center
-            matrix.setScale(scale, scale);
-            matrix.postTranslate(mRect.left, mRect.top);
-        } else {
-            //Landscape
-            scale = (mRect.height())/ bitmap.getHeight();
-            float difference = mRect.width() - bitmap.getWidth() * scale;
-            matrix.setScale(scale, scale);
-            matrix.postTranslate(mRect.left + difference / 2, mRect.top);
+        if (scaleType == ImageView.ScaleType.CENTER_CROP) {
+            if (bitmap.getHeight() > bitmap.getWidth()) {
+                //Portrait
+                scale = (mRect.width()) / bitmap.getWidth();
+                matrix.setScale(scale, scale);
+                //Portrait we don't want to translate to middle, since most of the faces are in top area, not in center
+                matrix.setScale(scale, scale);
+                matrix.postTranslate(mRect.left, mRect.top);
+            } else {
+                //Landscape
+                scale = (mRect.height()) / bitmap.getHeight();
+                float difference = mRect.width() - bitmap.getWidth() * scale;
+                matrix.setScale(scale, scale);
+                matrix.postTranslate(mRect.left + difference / 2, mRect.top);
+            }
+        } else if (scaleType == ImageView.ScaleType.FIT_CENTER) {
+            RectF bitmapRect = new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight());
+            float divisor = 1.414f; //sqrt of 2 because inner square fitting inside circle has a side of circle's diameter divided by sqrt(2)
+            float sideDimension =  (Math.max(mRect.width(), mRect.height()) / divisor); // side of the inner square
+            float remainingSpace = (Math.max(mRect.width(), mRect.height()) - sideDimension); // empty space used for center aligning
+            RectF newRect = new RectF(mRect.left + (remainingSpace / 2f), mRect.top + (remainingSpace / 2f), mRect.left + (remainingSpace / 2f) + sideDimension, mRect.top + (remainingSpace / 2f) + sideDimension);
+            matrix.setRectToRect(bitmapRect, newRect, Matrix.ScaleToFit.CENTER);
         }
     }
 
@@ -112,7 +128,7 @@ public class MatrixGenerator {
                     translateY = mBorderWidth + mRect.height() / 2;
                     break;
             }
-            matrix.postTranslate(mRect.left +translateX,mRect.top + translateY);
+            matrix.postTranslate(mRect.left + translateX, mRect.top + translateY);
         } else {
             //Landscape
             scale = mRect.height() / (2 * bitmap.getHeight());
@@ -153,7 +169,7 @@ public class MatrixGenerator {
             matrix.setScale(scale, scale);
             //Portrait we don't want to translate to middle, since most of the faces are in top area, not in center
             matrix.setScale(scale, scale);
-            matrix.postTranslate(containerRect.left + mBorderWidth + containerRect.width() - badgeRect.width(), containerRect.top +  mBorderWidth + containerRect.height() - badgeRect.height());
+            matrix.postTranslate(containerRect.left + mBorderWidth + containerRect.width() - badgeRect.width(), containerRect.top + mBorderWidth + containerRect.height() - badgeRect.height());
         } else {
             //Landscape
             scale = badgeRect.height() / bitmap.getHeight();

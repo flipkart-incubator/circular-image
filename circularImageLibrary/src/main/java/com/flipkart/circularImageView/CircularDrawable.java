@@ -142,7 +142,13 @@ public class CircularDrawable extends Drawable {
                 drawer.bitmap = bitmap;
                 drawer.bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
                 sourceObjects.add(drawer);
-            } else if (sources[i] instanceof TextDrawer) {
+            }
+            else if (sources[i] instanceof BitmapDrawer) {
+                BitmapDrawer drawer = (BitmapDrawer) sources[i];
+                drawer.bitmapShader = new BitmapShader(drawer.bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+                sourceObjects.add(drawer);
+            }
+            else if (sources[i] instanceof TextDrawer) {
                 sourceObjects.add(sources[i]);
             } else if (sources[i] instanceof IconDrawer) {
                 sourceObjects.add(sources[i]);
@@ -176,7 +182,8 @@ public class CircularDrawable extends Drawable {
             Object sourceObject = sourceObjects.get(i);
             if (sourceObject instanceof BitmapDrawer) {
                 BitmapDrawer bitmapDrawer = (BitmapDrawer) sourceObject;
-                bitmapDrawer.bitmapShader.setLocalMatrix(getLocalMatrix(mRect, mBorderWidth, bitmapDrawer.bitmap, drawerHelper.getDrawingType(i,
+                ImageView.ScaleType scaleType = bitmapDrawer.scaleType;
+                bitmapDrawer.bitmapShader.setLocalMatrix(getLocalMatrix(scaleType, mRect, mBorderWidth, bitmapDrawer.bitmap, drawerHelper.getDrawingType(i,
                         sourceObjects.size())));
             }
         }
@@ -292,7 +299,7 @@ public class CircularDrawable extends Drawable {
         mPaint.setColorFilter(cf);
     }
 
-    public Matrix getLocalMatrix(RectF rectF, float borderWidth, Bitmap bitmap, DrawingType drawingType) {
+    public Matrix getLocalMatrix(ImageView.ScaleType scaleType, RectF rectF, float borderWidth, Bitmap bitmap, DrawingType drawingType) {
         return new MatrixGenerator(rectF, borderWidth).generateMatrix(scaleType, bitmap, drawingType);
     }
 

@@ -2,6 +2,8 @@ package com.flipkart.circularImageView;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
+import android.graphics.Shader;
+import android.widget.ImageView;
 
 /**
  * Class that holds all the information to draw a bitmap.
@@ -10,5 +12,6 @@ import android.graphics.BitmapShader;
  */
 public class BitmapDrawer {
     public Bitmap bitmap;
-    public BitmapShader bitmapShader;
+    public Shader bitmapShader;
+    public ImageView.ScaleType scaleType = ImageView.ScaleType.CENTER_CROP;
 }
