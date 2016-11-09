@@ -1,5 +1,22 @@
 # CircularImage
 
+####Getting it
+Step 1: Add this in your root build.gradle at the end of repositories:
+```
+	allprojects {
+		repositories {
+			...
+			maven { url "https://jitpack.io" }
+		}
+	}
+```
+Step 2: Add the dependency
+```
+dependencies {
+	        compile 'com.github.flipkart-incubator:circular-image:1.0'
+	}
+```
+
 ####Description
 CircularImage is an android library to create a configurable CircularDrawables. It has the following functionalities:
 
