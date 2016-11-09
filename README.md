@@ -52,10 +52,10 @@ For more details, please refer the sample application.
 ###Creating a chat head : example
 ```
 Random rnd = new Random();
-        int randomColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        CircularDrawable circularDrawable = new CircularDrawable();
-        circularDrawable.setBitmapOrTextOrIcon(new TextDrawer().setText("C"+key).setBackgroundColor(randomColor));
-        int badgeCount = (int) (Math.random() * 10f);
-        circularDrawable.setNotificationDrawer(new CircularNotificationDrawer().setNotificationText(String.valueOf(badgeCount)).setNotificationAngle(135).setNotificationColor(Color.WHITE, Color.RED));
-        circularDrawable.setBorder(Color.WHITE, 3);
+int randomColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+CircularDrawable circularDrawable = new CircularDrawable();
+circularDrawable.setBitmapOrTextOrIcon(new TextDrawer().setText("C"+key).setBackgroundColor(randomColor));
+int badgeCount = (int) (Math.random() * 10f);
+circularDrawable.setNotificationDrawer(new CircularNotificationDrawer().setNotificationText(String.valueOf(badgeCount)).setNotificationAngle(135).setNotificationColor(Color.WHITE, Color.RED));
+circularDrawable.setBorder(Color.WHITE, 3);
 ```
